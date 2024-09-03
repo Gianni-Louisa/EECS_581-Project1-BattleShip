@@ -1,3 +1,6 @@
+from Ship import Ship
+
+
 columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
 rows = range(1, 11)
 header = '    ' + ' '.join(columns)
@@ -32,11 +35,11 @@ player_color_dict = {
     1: 'green'
 }
 
-def printStrikeBoard(player_num: int, player_strike_attempts: list, opponent_ship_locations: list) -> None: 
+def printStrikeBoard(player_num: int, player_strike_attempts: list, opponent_ships: list) -> None: 
     """
-        printStrikeBoard(player_num: int, player_strike_attempts: list, opponent_ship_locations: list)
+        printStrikeBoard(player_num: int, player_strike_attempts: list, opponent_ships: list)
 
-        Prints the board with specified player's strikes on it misses and hits
+        Prints the board with specified player's strikes on it (misses and hits)
 
         Parameters:
             player_num: an integer specifying which player's strike board to print
@@ -56,7 +59,7 @@ def printStrikeBoard(player_num: int, player_strike_attempts: list, opponent_shi
             # If the current position has been shot at by the player
             if cur_pos in player_strike_attempts:
                 # Check if that position contains an enemy ship
-                if cur_pos in opponent_ship_locations:
+                if cur_pos in [loc for ship in opponent_ships for loc in ship.locations]:
                     # Print an 'O' in the opponents color for a hit
                     row_str += convertTextToColor(' O', player_color_dict[abs(player_num-1)]) # abs(player_num-1) gets opponents player_num (eg for player 0 -> abs(0-1) = 1)
                 # If position does not have an enemy ship, print a red X
@@ -71,15 +74,15 @@ def printStrikeBoard(player_num: int, player_strike_attempts: list, opponent_shi
 
 
 
-def printBoard(player_num: int, ship_locations: list):
+def printBoard(player_num: int, ships: list):
     """
         printBoard(player_num: int, ship_locations: list)
 
-        Prints your board with your ships on it and the enemy's strikes and misses
+        Prints player's board with their ships on it
 
         Parameters
             player_num: an int specifying the number of the player
-            ship_locations: a list of strings specifying where the player's ships are
+            ships: a list of Ship objects for the player
     """
     # Print column names
     print(convertTextToColor(header, player_color_dict[player_num]))
@@ -92,12 +95,12 @@ def printBoard(player_num: int, ship_locations: list):
             # Get current location on board
             cur_pos = col+str(row)
             # If position contains a ship
-            if cur_pos in ship_locations:
-                # Print a + 
+            if cur_pos in [loc for ship in ships for loc in ship.locations]:
+                # Print a '+' 
                 row_str += ' +'
             # If position does not contain a ship
             else:
-                # Print a .
+                # Print a '.'
                 row_str += ' .'
         print(convertTextToColor(row_str, player_color_dict[player_num]))
         
@@ -113,11 +116,16 @@ def checkWin(): #Check difference between shots and ship locations if all ships 
     
 def initializeBoard(player_num): #When a player starts setup where they want their ships located NOT DONE
     if player_num == 0: 
-        # return(["B4","B3","B2","B1","J10","J9"])
-        return(["B4","B3","B2","B1", 'F5', 'F6'])
+        return [
+            Ship(['B4','B3','B2','B1']), 
+            Ship(['F1','F2','F3'])
+        ]
     elif player_num == 1:
-        # return(["A4","A3","A2","E1","E10","E9"])
-        return(["A4","A3","A2","E1", 'E2', 'E3'])
+        return [
+            Ship(['A1','A2']), 
+            Ship(['G4','G5','G6']), 
+            Ship(['F1','F2'])
+        ]
     else:
         raise Exception("ERROR: invalid player_num")
 
@@ -128,23 +136,24 @@ def main():
     while(checkWin()):
 
         # Initalize
-        player_zero_ship_locations = initializeBoard(0)
+        player_zero_ships = initializeBoard(0)
         player_zero_strike_attempts = ["A2", 'A3', "E1","E2","E9","J10","J9"]
-        player_one_ship_locations = initializeBoard(1)
+
+        player_one_ships = initializeBoard(1)
         player_one_strike_attempts = ["B4","B3","B2","E1"]
 
         # Player 0 turn
-        printStrikeBoard(0, player_zero_strike_attempts, player_one_ship_locations)
+        printStrikeBoard(0, player_zero_strike_attempts, player_one_ships)
         print()
-        printBoard(0, player_zero_ship_locations)
+        printBoard(0, player_zero_ships)
         # shootShip(player_zero_ship_locations)
         input("\nPress Enter to continue...\n")
         
 
         # Player 1 turn
-        printStrikeBoard(1, player_one_strike_attempts, player_zero_ship_locations)
+        printStrikeBoard(1, player_one_strike_attempts, player_zero_ships)
         print()
-        printBoard(1, player_one_ship_locations)
+        printBoard(1, player_one_ships)
         # shootShip(player_one_ship_locations)
         input("\nPress Enter to continue...\n")
     
