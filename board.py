@@ -105,11 +105,41 @@ def printBoard(player_num: int, ships: list):
         print(convertTextToColor(row_str, player_color_dict[player_num]))
         
 
-
+def checkHit(shot, ship_locations): # Check whether a shot is a hit or miss and print the correct message
+    if shot in ship_locations: # Check whether the shot hit one of the coordinates held in ship locations
+        print("\nHIT!\n")
+    else:
+        print("\nMISS!\n")
 
     
-def shootShip(ship_locations): #ask for input and add to the shot array to show on board, check if hit or miss
-    print()
+def shootShip(ship_locations): # Ask for input coordinates and add to the shot array to show on board, check if hit or miss
+    print("\nChoose your coordinate to shoot!")
+
+    column = input("Enter a valid column (A-J): ").upper() # Player inputs column
+
+    # Input validation loop. If not valid, continue to ask for a valid column
+    while column not in columns: 
+        column = input("Enter a valid column (A-J): ").upper() # Player inputs column
+    
+    validRow = False # Loop condition variable
+
+    # Input validation loopa. If not valid, continue to ask for a valid row
+    while not validRow:
+        row = input("Enter a valid row (1-10): ") # Player inputs row
+        for i in rows:
+            if row == str(i): # If the input is a valid input, break the loop
+                validRow = True 
+                break
+
+    shot = column + row # Combine column and row to make a valid coordinate
+
+    checkHit(shot, ship_locations) # Check to see whether the shot was a hit or miss
+
+    return shot
+
+    
+
+    
     
 def checkWin(): #Check difference between shots and ship locations if all ships are shot return false
     return True
@@ -133,29 +163,33 @@ def initializeBoard(player_num): #When a player starts setup where they want the
     
             
 def main():
+    # Initialize Variables
+    player_zero_strike_attempts = []
+    player_one_strike_attempts = []
+    player_zero_ship_locations = []
+    player_one_ship_locations = []
+
     while(checkWin()):
 
         # Initalize
         player_zero_ships = initializeBoard(0)
-        player_zero_strike_attempts = ["A2", 'A3', "E1","E2","E9","J10","J9"]
 
         player_one_ships = initializeBoard(1)
-        player_one_strike_attempts = ["B4","B3","B2","E1"]
 
         # Player 0 turn
         printStrikeBoard(0, player_zero_strike_attempts, player_one_ships)
         print()
         printBoard(0, player_zero_ships)
-        # shootShip(player_zero_ship_locations)
-        input("\nPress Enter to continue...\n")
+        player_zero_strike_attempts.append(shootShip(player_zero_ship_locations))
+        input("Press Enter to continue...\n")
         
 
         # Player 1 turn
         printStrikeBoard(1, player_one_strike_attempts, player_zero_ships)
         print()
         printBoard(1, player_one_ships)
-        # shootShip(player_one_ship_locations)
-        input("\nPress Enter to continue...\n")
+        player_one_strike_attempts.append(shootShip(player_one_ship_locations))
+        input("Press Enter to continue...\n")
     
     
 main()
