@@ -168,7 +168,21 @@ def main():
     player_one_strike_attempts = []
     player_zero_ship_locations = []
     player_one_ship_locations = []
-
+    #//Ben R start
+    valid_num_ships = ['1','2','3','4','5'] #used to check if user chose the correct number of ships
+    goodInput = False #used for while loop to check for a correct input num of ships
+    
+    #choosing the number of ships 
+    print("Welcome to Battle Ship!")
+    while goodInput == False: #runs until we get a good input
+        numShips = input("Choose the number of ships you wish to play with! (1-5): ") #inputted number of ships for the game
+        if numShips in valid_num_ships: #used to break the loop if numShips in valid_num_ships
+            goodInput = True #break loop
+            numShips = int(numShips) #now we want it to be a type int for later
+        else:
+            print("Error! Please input a valid number of ships to start.")
+    #//Ben R end
+          
     while(checkWin()):
 
         # Initalize
