@@ -180,7 +180,7 @@ def main():
             goodInput = True #break loop
             numShips = int(numShips) #now we want it to be a type int for later
         else:
-            print("Error! Please input a valid number of ships to start.")
+            print("Error! Please input a valid number of ships to start.") #print error and try again
     #//Ben R end
           
     while(checkWin()):
