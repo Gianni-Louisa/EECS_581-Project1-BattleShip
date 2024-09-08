@@ -22,3 +22,20 @@ class Player:
         self.number = number # An integer for player identification
         self.ships = [] # A list of the player's ship objects
         self.strike_attempts = [] # A list containing a player's strikes
+
+    def getShipLocations(self):
+        """
+            getShipLocations(self)
+
+            Returns list of string ship locations/coordinates
+
+            Parameters
+                None
+        """
+        coordinates = [] # Initialize the locations/coordinates list
+
+        for ship in self.ships: # For each ship in the player's ship list
+            for coordinate in ship.locations: # For each coordinate in the ship's location list
+                coordinates.append(coordinate) # Add it to the coordinates list
+
+        return coordinates # Return the coordinates list

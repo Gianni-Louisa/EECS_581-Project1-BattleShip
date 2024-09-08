@@ -9,7 +9,10 @@ from Player import Player
 
 columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
 rows = range(1, 11)
+str_rows = ['1', '2', '3', '4', '5', '6', '7', '8', '9', "10"]
 header = '    ' + ' '.join(columns)
+player_zero = Player(0)
+player_one = Player(1)
 
 
 def convertTextToColor(text: str, color: str) -> str:
@@ -146,25 +149,12 @@ def shootShip(ship_locations: list) -> str:
 
     print("Choose your coordinate to shoot!")
 
-    column = input("Enter a valid column (A-J): ").upper() # Player inputs column
-
-    # Input validation loop. If not valid, continue to ask for a valid column
-    while column not in columns: 
-        column = input("Enter a valid column (A-J): ").upper() # Player inputs column
-    
-    valid_row = False # Loop condition variable
-
-    # Input validation loop. If not valid, continue to ask for a valid row
-    while not valid_row:
-        row = input("Enter a valid row (1-10): ") # Player inputs row
-        for i in rows:
-            if row == str(i): # If the input is a valid input, break the loop
-                valid_row = True 
-                break
-
-    shot = column + row # Combine column and row to make a valid coordinate
-
-    checkHit(shot, ship_locations) # Check to see whether the shot was a hit or miss
+    while True: # Loop to validate the input coordinate
+        shot = input("Coordinate: ").upper() # Player inputs coordinate
+        if 2 <= len(shot) <= 3 and shot[0] in columns and shot[1] in str_rows: # If the coordinate is 2 or 3 characters long and the first character is a valid column and the second character is a valid row
+            if len(shot) == 3 and (shot[1] + shot[2] not in str_rows): # If the coordinate is three characters long and the two characters at the end aren't in the list of valid rows
+                continue # Stay in the loop
+            break # Break out of the loop
 
     return shot # Return the coordinate of the shot as a string
 
@@ -207,14 +197,21 @@ def takeTurn(player: Player) -> None:
     print()
     printBoard(player.number, player.ships)
     print(f"\nPlayer {player.number}'s turn!")
-    player.strike_attempts.append(shootShip(player.getShipLocations()))
+
+    enemy_ship_locations = player_one.getShipLocations() if player.number == 0 else player_zero.getShipLocations() # Determine the ship locations of the other player
+    
+    while True: # Perform a while loop to avoid duplicate shots
+        shot = shootShip(enemy_ship_locations) # Allow the player to choose a coordinate to shoot
+        if shot not in player.strike_attempts: # If the shot has not already been taken
+            break # Break out of the loop
+        print("Shot already taken.\n") # Notify player that the shot was a duplicate
+    checkHit(shot, enemy_ship_locations) # Check to see whether the shot was a hit or miss
+    player.strike_attempts.append(shot) # Add the shot taken to the player's strike attempts
+
     input("Press Enter to continue...\n")
     
             
 def main():
-    # Initialize Variables
-    player_zero = Player(0)
-    player_one = Player(1)
     
     #//Ben R start
     valid_num_ships = ['1','2','3','4','5'] #used to check if user chose the correct number of ships
