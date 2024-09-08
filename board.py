@@ -139,12 +139,10 @@ def shootShip(ship_locations: list) -> str:
     """
         shootShip(ship_locations: list)
 
-        Asks for input coordinates and adds to the shot array to show on the board. Checks if the shot is a hit or miss. 
-        
-        Returns a string representing the coordinate of the shot taken
+        Allows a player to input their desired shot coordinates and returns a string representing the coordinates
 
         Parameters
-            ship_locations: a list of Ship locations
+            ship_locations: a list of enemy Ship locations
     """
 
     print("Choose your coordinate to shoot!")
