@@ -166,14 +166,11 @@ def checkWin(): #Check difference between shots and ship locations if all ships 
 def initializeBoard(player_num): # When a player starts setup where they want their ships located NOT DONE
     if player_num == 0: 
         return [
-            Ship(['B4','B3','B2','B1']), 
-            Ship(['F1','F2','F3'])
+            
         ]
     elif player_num == 1:
         return [
-            Ship(['A1','A2']), 
-            Ship(['G4','G5','G6']), 
-            Ship(['F1','F2'])
+            
         ]
     else:
         raise Exception("ERROR: invalid player_num")
@@ -225,7 +222,10 @@ def main():
         else:
             print("Error! Please input a valid number of ships to start.") #print error and try again
     #//Ben R end
-          
+    
+    #//Ben R start ship placement
+    
+    #//Ben R end      
     while(checkWin()):
 
         # Initalize
