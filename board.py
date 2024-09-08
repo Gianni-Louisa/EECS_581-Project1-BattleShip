@@ -323,7 +323,30 @@ def move_line(grid, size, p1_selection): #chat gpt
             return (None, None)  # Return None to exit the loop
         else:
             print("Invalid move! Please use W, A, S, D, R, C, or Q.")
-#//Ben R end         
+#//Ben R end     
+
+def translateCoordinates(ship_tuples: list) -> list:
+    """
+        translateCoordinates(ship_tuples)
+
+        Translates ship coordinates from integer tuples to string coordinates, e.g. A3
+
+        Returns a list of lists that contain ship locations in the form of string coordinates
+
+        Parameters
+            ship_tuples: a list of lists that contain ship location integer tuples
+    """
+    all_ship_coordinates = [] # Initialize a list to hold the translated ship coordinates
+
+    for ship in ship_tuples: # For each list of ship locations inside the ships list
+        ship_coordinates = [] # Initialize a list to hold individual ships translated coordinates
+        for tup in ship: # For each tuple representing a coordinate inside the ship locations
+            coordinate = columns[tup[1]] + str_rows[tup[0]] # Convert the integer tuple to a column and row
+            ship_coordinates.append(coordinate) # Add the coordinate to the list of ship coordinates
+        all_ship_coordinates.append(ship_coordinates) # Add the list of ship coordinates to the list of ships
+    
+    return all_ship_coordinates # Return the translated ship coordinates
+
 def main():
     
     #//Ben R start
@@ -372,13 +395,15 @@ def main():
                 p2_confirmed_coordinates.append(line_coords)#me
             both_selections = True#me
         input('Press anything to continue: ') #me
+
+    for ship_location in translateCoordinates(p1_confirmed_coordinates): # For each ship in player zero's ship placement coordinate list
+        player_zero.ships.append(Ship(ship_location)) # Add each ship to the player's ship list
+
+    for ship_location in translateCoordinates(p2_confirmed_coordinates): # For each ship in player zero's ship placement coordinate list
+        player_one.ships.append(Ship(ship_location)) # Add each ship to the player's ship list
+
     #//Ben R end      
     while(checkWin()):
-
-        # Initalize
-        player_zero.ships = initializeBoard(0)
-
-        player_one.ships = initializeBoard(1)
 
         # Player 0 turn
         takeTurn(player_zero)
