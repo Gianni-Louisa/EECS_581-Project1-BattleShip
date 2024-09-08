@@ -19,10 +19,6 @@ class Player:
             Parameters
                 number: an integer to identify different players
         """
-        
-        self.number = number 
+        self.number = number # An integer for player identification
         self.ships = [] # A list of the player's ship objects
         self.strike_attempts = [] # A list containing a player's strikes
-
-    def getShipLocations(self):
-        return []
