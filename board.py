@@ -207,10 +207,132 @@ def takeTurn(player: Player) -> None:
 
     input("Press Enter to continue...\n")
     
-            
+#//Ben R start   
+def create_grid(x_size=10, y_size=10): #chat gpt
+    # Create a grid filled with '.'
+    return [['.' for _ in range(y_size)] for _ in range(x_size)]
+
+def add_line_to_grid(grid, line_pos_x, line_pos_y, size, horizontal=True): #chat gpt
+    # Add a line of 'size' '#' characters to the grid temporarily
+    temp_grid = [row[:] for row in grid]  # Make a copy of the grid
+    for i in range(size):
+        if horizontal:
+            temp_grid[line_pos_x][line_pos_y + i] = '#'
+        else:
+            temp_grid[line_pos_x + i][line_pos_y] = '#'
+    return temp_grid
+
+def add_confirm_to_grid(grid, line_pos_x, line_pos_y, size, horizontal=True): #me
+    # Add a line of 'size' '+' characters permanently to the grid
+    for i in range(size):
+        if horizontal:
+            grid[line_pos_x][line_pos_y + i] = '+'
+        else:
+            grid[line_pos_x + i][line_pos_y] = '+'
+    return grid
+
+def get_line_coordinates(line_pos_x, line_pos_y, size, horizontal=True): #chat gpt
+    # Generate a list of coordinates for the line
+    coordinates = []
+    for i in range(size):
+        if horizontal:
+            coordinates.append((line_pos_x, line_pos_y + i))
+        else:
+            coordinates.append((line_pos_x + i, line_pos_y))
+    return coordinates
+
+def check_overlap(grid, line_pos_x, line_pos_y, size, horizontal=True): #chat gpt
+    # Check if the new line overlaps with any '+' on the grid
+    for i in range(size):
+        if horizontal:
+            if grid[line_pos_x][line_pos_y + i] == '+':
+                return True  # Overlap detected
+        else:
+            if grid[line_pos_x + i][line_pos_y] == '+':
+                return True  # Overlap detected
+    return False  # No overlap
+
+def display_grid(grid): #chat gpt
+    # Display the current state of the grid
+    for row in grid:
+        print(" ".join(row))
+    print()
+
+def move_line(grid, size, p1_selection): #chat gpt
+    x_size, y_size = len(grid), len(grid[0])
+    horizontal = True  # Start with a horizontal line
+
+    # Start the line in the center of the grid
+    line_pos_x = x_size // 2
+    line_pos_y = (y_size - size) // 2
+
+    while True:
+        # Display the grid with the current line
+        temp_grid = add_line_to_grid(grid, line_pos_x, line_pos_y, size, horizontal)  # Temporary grid with current line
+        if p1_selection == False:#me
+            print("Player 1 Ship Placement Selection!")#me
+        else:#me
+            print("Player 2 Ship Placement Selection!")#me
+        display_grid(temp_grid)
+
+        # Get user input for movement
+        move = input("Move (W=up, A=left, S=down, D=right, R=rotate, C=confirm, Q=quit): ").upper()
+
+        # Handle movement with bounds checking
+        if move == 'W' and line_pos_x > 0:  # Move up
+            line_pos_x -= 1
+        elif move == 'S' and (line_pos_x < x_size - 1 if horizontal else line_pos_x + size - 1 < x_size - 1):  # Move down
+            line_pos_x += 1
+        elif move == 'A' and line_pos_y > 0:  # Move left
+            line_pos_y -= 1
+        elif move == 'D' and (line_pos_y < y_size - 1 if not horizontal else line_pos_y + size - 1 < y_size - 1):  # Move right
+            line_pos_y += 1
+        elif move == 'R':  # Rotate the line around its center
+            mid_offset = size // 2  # Offset from the start to the center of the line
+
+            if horizontal:  # Rotate to vertical
+                new_pos_x = line_pos_x - mid_offset
+                new_pos_y = line_pos_y + mid_offset
+
+                # Ensure the vertical line fits in bounds
+                if new_pos_x >= 0 and new_pos_x + size <= x_size:
+                    line_pos_x = new_pos_x
+                    line_pos_y = new_pos_y
+                    horizontal = False
+                else:
+                    print("Not enough space to rotate!")
+            else:  # Rotate to horizontal
+                new_pos_x = line_pos_x + mid_offset
+                new_pos_y = line_pos_y - mid_offset
+
+                # Ensure the horizontal line fits in bounds
+                if new_pos_y >= 0 and new_pos_y + size <= y_size:
+                    line_pos_x = new_pos_x
+                    line_pos_y = new_pos_y
+                    horizontal = True
+                else:
+                    print("Not enough space to rotate!")
+        elif move == 'C':  # Confirm and save current line
+            if check_overlap(grid, line_pos_x, line_pos_y, size, horizontal):
+                print("Overlap detected! Move the line to a new position.")
+            else:
+                grid = add_confirm_to_grid(grid, line_pos_x, line_pos_y, size, horizontal)
+                coordinates = get_line_coordinates(line_pos_x, line_pos_y, size, horizontal)
+                print("Line confirmed at position!")
+                return (grid, coordinates)  # Return the updated grid and the coordinates of the line
+        elif move == 'Q':  # Quit the game
+            print("Game ended.")
+            return (None, None)  # Return None to exit the loop
+        else:
+            print("Invalid move! Please use W, A, S, D, R, C, or Q.")
+#//Ben R end         
 def main():
     
     #//Ben R start
+    p1_confirmed_coordinates = [] #//me
+    p2_confirmed_coordinates = [] #me
+    p1_selection = False #me
+    both_selections = False #me
     valid_num_ships = ['1','2','3','4','5'] #used to check if user chose the correct number of ships
     goodInput = False #used for while loop to check for a correct input num of ships
     
@@ -226,7 +348,32 @@ def main():
     #//Ben R end
     
     #//Ben R start ship placement
-    
+    while both_selections == False: #me
+        # Initialize an empty grid
+        x_size, y_size = 10, 10 #chatgpt
+        grid = create_grid(x_size, y_size)#chatgpt
+        confirmed_coordinates = []  # List to store the coordinates of confirmed lines
+        temp_numShips = numShips#me
+        while temp_numShips > 0:  # Continue until the line size reaches 0#chatgpt
+            result = move_line(grid, temp_numShips, p1_selection)  # Pass the existing grid to keep confirmed lines
+            grid, line_coordinates = result#chatgpt
+            if grid is None:#chatgpt
+                break  # Exit the loop if the player quits
+            confirmed_coordinates.append(line_coordinates)  # Save the coordinates of the confirmed line
+            temp_numShips -= 1  # Decrease the size of the line after each confirmation
+
+        # Final board after all lines have been placed
+        print("Final board:")#me
+        display_grid(grid)#me
+        if p1_selection == False:#me
+            for line_coords in confirmed_coordinates:#me
+                p1_confirmed_coordinates.append(line_coords)#me
+            p1_selection = True#me
+        else:#me
+            for line_coords in confirmed_coordinates:#me
+                p2_confirmed_coordinates.append(line_coords)#me
+            both_selections = True#me
+        input('Press anything to continue: ') #me
     #//Ben R end      
     while(checkWin()):
 
