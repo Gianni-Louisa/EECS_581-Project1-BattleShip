@@ -114,7 +114,7 @@ def printBoard(player_num: int, ships: list):
         print(convertTextToColor(row_str, player_color_dict[player_num]))
         
 
-def checkHit(shot: str, ship_locations: list) -> None: # ADD FUNCTIONALITY FOR SUNK SHIP HERE
+def checkHit(shot: str, enemy: Player) -> None:
     """
         checkHit(shot: str, ship_locations: list)
 
@@ -124,15 +124,19 @@ def checkHit(shot: str, ship_locations: list) -> None: # ADD FUNCTIONALITY FOR S
 
         Parameters
             shot: a string representing the coordinate of the shot
-            ship_locations: a list of Ship locations
+            ships: a list of Ships
     """
+    for enemy_ship in enemy.ships:
+        for enemy_ship_locations in enemy_ship.locations:
+            if shot in enemy_ship_locations: # Check if the shot hit one of the coordinates held in ship locations
+                enemy_ship.hit_segments.append(shot) # Add the section of the ship that was hit to the Ship object's list of hit segments
+                print("\nHIT!\n") # Print HIT to the console
 
-    if shot in ship_locations: # Check if the shot hit one of the coordinates held in ship locations
-        print("\nHIT!\n") # Print HIT to the console
-    else: # If the shot did not hit a ship coordinate
-        print("\nMISS!\n") # Print MISS to the console
-
-    # Add condition here to check if ship completely sunk
+                # Check if all segments of the enemy ship has been hit
+                if sorted(enemy_ship.hit_segments) == sorted(enemy_ship.locations):
+                    print("SHIP DESTROYED!\n") # Print that the ship was destroyed
+            else: # If the shot did not hit a ship coordinate
+                print("\nMISS!\n") # Print MISS to the console
 
     
 def shootShip(ship_locations: list) -> str: 
@@ -193,14 +197,15 @@ def takeTurn(player: Player) -> None:
     printBoard(player.number, player.ships)
     print(f"\nPlayer {player.number}'s turn!")
 
-    enemy_ship_locations = player_one.getShipLocations() if player.number == 0 else player_zero.getShipLocations() # Determine the ship locations of the other player
-    
+    enemy = player_one if player.number == 0 else player_zero # Determine the other player
+    enemy_ship_locations = enemy.getShipLocations() # Determine the ship locations of the other player
+
     while True: # Perform a while loop to avoid duplicate shots
         shot = shootShip(enemy_ship_locations) # Allow the player to choose a coordinate to shoot
         if shot not in player.strike_attempts: # If the shot has not already been taken
             break # Break out of the loop
         print("Shot already taken.\n") # Notify player that the shot was a duplicate
-    checkHit(shot, enemy_ship_locations) # Check to see whether the shot was a hit or miss
+    checkHit(shot, enemy) # Check to see whether the shot was a hit or miss
     player.strike_attempts.append(shot) # Add the shot taken to the player's strike attempts
 
     input("Press Enter to continue...\n")
