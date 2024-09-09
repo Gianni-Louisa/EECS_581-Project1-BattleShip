@@ -188,13 +188,25 @@ def checkWin():
     """
     # Check if all ships of player_zero are destroyed
     if all(ship.destroyed for ship in player_zero.ships):
-        print("Player 1 wins!")
+        print("======================================")
+        print("🎉🎉🎉  CONGRATULATIONS!  🎉🎉🎉")
+        print("======================================")
+        print("      🚢💥 Player 1 Wins! 💥🚢")
+        print("======================================")
+        print("    All enemy ships have been sunk!")
+        print("======================================\n")
         checkWinFlag = False
         return False  # The game ends when player 1 wins
     
     # Check if all ships of player_one are destroyed
     if all(ship.destroyed for ship in player_one.ships):
-        print("Player 0 wins!")
+        print("======================================")
+        print("🎉🎉🎉  CONGRATULATIONS!  🎉🎉🎉")
+        print("======================================")
+        print("      🚢💥 Player 0 Wins! 💥🚢")
+        print("======================================")
+        print("    All enemy ships have been sunk!")
+        print("======================================\n")
         checkWinFlag = False
         return False  # The game ends when player 0 wins
     
