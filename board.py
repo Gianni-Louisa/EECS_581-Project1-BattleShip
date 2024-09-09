@@ -153,7 +153,7 @@ def shootShip(ship_locations: list) -> str:
     """
         shootShip(ship_locations: list)
 
-        Allows a player to input their desired shot coordinates and returns a string representing the coordinates
+        Allows a player to input their desired shot coordinates an6d returns a string representing the coordinates
 
         Parameters
             ship_locations: a list of enemy Ship locations
@@ -173,9 +173,30 @@ def shootShip(ship_locations: list) -> str:
     
 
     
+checkWinFlag = True  
+def checkWin():
+    """
+        checkWin()
+
+        Checks whether any player has won by destroying all the opponent's ships.
+        
+        Returns True if the game should continue (no one has won), 
+        or False if any player has won (all opponent's ships are destroyed).
+    """
+    # Check if all ships of player_zero are destroyed
+    if all(ship.destroyed for ship in player_zero.ships):
+        print("Player 1 wins!")
+        checkWinFlag = False
+        return False  # The game ends when player 1 wins
     
-def checkWin(): #Check difference between shots and ship locations if all ships are shot return false
-    return True
+    # Check if all ships of player_one are destroyed
+    if all(ship.destroyed for ship in player_one.ships):
+        print("Player 0 wins!")
+        checkWinFlag = False
+        return False  # The game ends when player 0 wins
+    
+    return True  # The game continues if neither player has won yet
+
     
 def initializeBoard(player_num): # When a player starts setup where they want their ships located NOT DONE
     if player_num == 0: 
@@ -417,15 +438,18 @@ def main():
     for ship_location in translateCoordinates(p2_confirmed_coordinates): # For each ship in player zero's ship placement coordinate list
         player_one.ships.append(Ship(ship_location)) # Add each ship to the player's ship list
 
-    #//Ben R end      
-    while(checkWin()):
+    #//Ben R end
+          
+    while(checkWinFlag):
 
         # Player 0 turn
         takeTurn(player_zero)
-        
+        if checkWin() == False:
+            break
         # Player 1 turn
         takeTurn(player_one)
-    
+        if checkWin() == False:
+            break
     
 main()
 
