@@ -434,8 +434,9 @@ def main():
         while temp_numShips > 0:  # Continue until the line size reaches 0#chatgpt
             result = move_line(grid, temp_numShips, p1_selection)  # Pass the existing grid to keep confirmed lines
             grid, line_coordinates = result#chatgpt
-            if grid is None:#chatgpt
-                break  # Exit the loop if the player quits
+            if grid is None:  # Player chose to quit
+                print("Game quit.")
+                return  # Exit the main function
             confirmed_coordinates.append(line_coordinates)  # Save the coordinates of the confirmed line
             temp_numShips -= 1  # Decrease the size of the line after each confirmation
 
@@ -464,12 +465,12 @@ def main():
 
         # Player 0 turn
         takeTurn(player_zero)
-        if checkWin() == False:
+        if not checkWin():  # Check if Player 0 wins
             break
-        # Player 1 turn
         takeTurn(player_one)
-        if checkWin() == False:
+        if not checkWin():  # Check if Player 1 wins
             break
+
     
 main()
 
