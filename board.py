@@ -16,119 +16,15 @@ columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
 rows = range(1, 11)
 str_rows = ['1', '2', '3', '4', '5', '6', '7', '8', '9', "10"]
 header = '    ' + ' '.join(columns)
-player_zero = Player(0)
-player_one = Player(1)
 
+player_zero = Player(0, 'green', header, columns, rows)
+player_one = Player(1, 'blue', header, columns, rows)
 
-def convertTextToColor(text: str, color: str) -> str:
-    """
-        convertTextToColor(color: str, text: str)
-
-        Function to get the ascii for a string to display it as a given color ('green', 'blue', or 'red')
-
-        Parameters:
-            text: a string to  convert the the color specifed by 'color'
-            color: a string in ['green', 'blue', 'red'] 
-
-        Returns:
-            The 'text' string with the appropriate color code around it
-    """
-    if (color == 'green'):
-        return f'\033[32m{text}\033[0m'
-    elif color == 'blue':
-        return f'\033[34m{text}\033[0m'
-    elif color == 'red':
-        return f'\033[31m{text}\033[0m'
-    else:
-        raise Exception("ERROR: Invalid color string provided")
-
-
-# Dict to associate players' numbers with their colors 
-player_color_dict = {
-    0: 'blue',
-    1: 'green'
-}
-
-def printStrikeBoard(player_num: int, player_strike_attempts: list, opponent_ships: list) -> None: 
-    """
-        printStrikeBoard(player_num: int, player_strike_attempts: list, opponent_ships: list)
-
-        Prints the board with specified player's strikes on it (misses and hits)
-
-        Parameters:
-            player_num: an integer specifying which player's strike board to print
-            player_strike_attempts: a list of strings specifying where player has shot
-            opponent_ship_locations: a list of strings specifying where the enemy ships are
-    """
-
-    # Print column names
-    print(convertTextToColor(header, player_color_dict[player_num]))
-
-    # For each row
-    for row in rows:
-        row_str = f"{row:2} "
-        # For each column
-        for col in columns:
-            cur_pos = col+str(row)
-            # If the current position has been shot at by the player
-            if cur_pos in player_strike_attempts:
-                # Go through the opponent ships 
-                hit = False
-                for opponent_ship in opponent_ships:
-                    # Check if that position contains an enemy ship
-                    if cur_pos in opponent_ship.locations:
-                        # If the ship is destroyed, print a # in the color of the player
-                        if opponent_ship.destroyed:
-                            row_str += convertTextToColor(' #', player_color_dict[abs(player_num-1)]) # Opponent's color for a destroyed ship
-                        else:
-                            row_str += convertTextToColor(' O', player_color_dict[abs(player_num-1)]) # Opponent's color for a hit
-                        hit = True
-                        break
-                # If no hit was detected, it's a miss
-                if not hit:
-                    row_str += convertTextToColor(' X', 'red')  # Red X for a miss
-            # If position has not been shot at by player, print a '.'
-            else:
-                row_str += convertTextToColor(' .', player_color_dict[player_num]) 
-        # Print the created string for the current row
-        print(convertTextToColor(row_str, player_color_dict[player_num]))
-
-
-
-def printBoard(player_num: int, ships: list):
-    """
-        printBoard(player_num: int, ship_locations: list)
-
-        Prints player's board with their ships on it
-
-        Parameters
-            player_num: an int specifying the number of the player
-            ships: a list of Ship objects for the player
-    """
-    # Print column names
-    print(convertTextToColor(header, player_color_dict[player_num]))
-
-    # For each row
-    for row in rows:
-        row_str = f"{row:2} "
-        # For each column
-        for col in columns:
-            # Get current location on board
-            cur_pos = col+str(row)
-            # If position contains a ship
-            if cur_pos in [loc for ship in ships for loc in ship.locations]:
-                # Print a '+' 
-                row_str += ' +'
-            # If position does not contain a ship
-            else:
-                # Print a '.'
-                row_str += ' .'
-        print(convertTextToColor(row_str, player_color_dict[player_num]))
         
 
 def checkHit(shot: str, enemy: Player) -> None:
     """
-        checkHit(shot: str, ship_locations: list)
+        checkHit(shot: str, enemy: PLayer)
 
         Checks whether a shot is a hit or miss and prints the correct message. 
         
@@ -232,7 +128,7 @@ def initializeBoard(player_num): # When a player starts setup where they want th
 
 def takeTurn(player: Player) -> None:
     """
-        turn(player: Player)
+        takeTurn(player: Player)
 
         Prints the board and allows the player to take their shot
         
@@ -243,9 +139,9 @@ def takeTurn(player: Player) -> None:
     """
 
     enemy = player_one if player.number == 0 else player_zero # Determine the other player
-    printStrikeBoard(player.number, player.strike_attempts, enemy.ships)
+    player.printStrikeBoard(enemy)
     print()
-    printBoard(player.number, player.ships)
+    player.printBoard()
     print(f"\nPlayer {player.number}'s turn!")
 
     enemy_ship_locations = enemy.getShipLocations() # Determine the ship locations of the other player
