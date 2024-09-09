@@ -68,27 +68,26 @@ def printStrikeBoard(player_num: int, player_strike_attempts: list, opponent_shi
             # If the current position has been shot at by the player
             if cur_pos in player_strike_attempts:
                 # Go through the opponent ships 
+                hit = False
                 for opponent_ship in opponent_ships:
                     # Check if that position contains an enemy ship
                     if cur_pos in opponent_ship.locations:
                         # If the ship is destroyed, print a # in the color of the player
                         if opponent_ship.destroyed:
-                            # Print an '#' in the opponents color for a hit
-                            row_str += convertTextToColor(' #', player_color_dict[abs(player_num-1)]) # abs(player_num-1) gets opponents player_num (eg for player 0 -> abs(0-1) = 1)
-                        # If ship is NOT destroyed, print a O in the color of the player
+                            row_str += convertTextToColor(' #', player_color_dict[abs(player_num-1)]) # Opponent's color for a destroyed ship
                         else:
-                            # Print an 'O' in the opponents color for a hit
-                            row_str += convertTextToColor(' O', player_color_dict[abs(player_num-1)]) # abs(player_num-1) gets opponents player_num (eg for player 0 -> abs(0-1) = 1)
+                            row_str += convertTextToColor(' O', player_color_dict[abs(player_num-1)]) # Opponent's color for a hit
+                        hit = True
+                        break
 
-                    # If position does not have an enemy ship, print a red X
-                    else:
-                        row_str += convertTextToColor(' X', 'red')  # Red X
-            # If position has not been shot at by player, print a '.' in the color of the player
+                # If no hit was detected, it's a miss
+                if not hit:
+                    row_str += convertTextToColor(' X', 'red')  # Red X for a miss
+            # If position has not been shot at by player, print a '.'
             else:
                 row_str += convertTextToColor(' .', player_color_dict[player_num]) 
         # Print the created string for the current row
         print(convertTextToColor(row_str, player_color_dict[player_num]))
-
 
 
 
