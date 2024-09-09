@@ -1,11 +1,14 @@
 """
-    Prologue Comment
-
-    Author(s): Brinley Hull (if anyone adds to this file, add your name here)
+    Program name: Player.py
+    Description: Creates a class to hold Player object information
+    Inputs: 
+    Outputs: 
+    Sources of code: Team authored
+    Authors: Connor Bennudriti, Brinley Hull, Gianni Louisa, Kyle Moore, Ben Renner
     Creation Date: 9/7/2024
 """
 
-from Ship import Ship # This may not be needed
+from Ship import Ship # Import from Ship class
 
 class Player:
     def __init__(self, number: int):
