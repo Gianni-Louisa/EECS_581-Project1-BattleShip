@@ -67,13 +67,22 @@ def printStrikeBoard(player_num: int, player_strike_attempts: list, opponent_shi
             cur_pos = col+str(row)
             # If the current position has been shot at by the player
             if cur_pos in player_strike_attempts:
-                # Check if that position contains an enemy ship
-                if cur_pos in [loc for ship in opponent_ships for loc in ship.locations]:
-                    # Print an 'O' in the opponents color for a hit
-                    row_str += convertTextToColor(' O', player_color_dict[abs(player_num-1)]) # abs(player_num-1) gets opponents player_num (eg for player 0 -> abs(0-1) = 1)
-                # If position does not have an enemy ship, print a red X
-                else:
-                    row_str += convertTextToColor(' X', 'red')  # Red X
+                # Go through the opponent ships 
+                for opponent_ship in opponent_ships:
+                    # Check if that position contains an enemy ship
+                    if cur_pos in opponent_ship.locations:
+                        # If the ship is destroyed, print a # in the color of the player
+                        if opponent_ship.destroyed:
+                            # Print an '#' in the opponents color for a hit
+                            row_str += convertTextToColor(' #', player_color_dict[abs(player_num-1)]) # abs(player_num-1) gets opponents player_num (eg for player 0 -> abs(0-1) = 1)
+                        # If ship is NOT destroyed, print a O in the color of the player
+                        else:
+                            # Print an 'O' in the opponents color for a hit
+                            row_str += convertTextToColor(' O', player_color_dict[abs(player_num-1)]) # abs(player_num-1) gets opponents player_num (eg for player 0 -> abs(0-1) = 1)
+
+                    # If position does not have an enemy ship, print a red X
+                    else:
+                        row_str += convertTextToColor(' X', 'red')  # Red X
             # If position has not been shot at by player, print a '.' in the color of the player
             else:
                 row_str += convertTextToColor(' .', player_color_dict[player_num]) 
@@ -134,6 +143,7 @@ def checkHit(shot: str, enemy: Player) -> None:
 
                 # Check if all segments of the enemy ship has been hit
                 if sorted(enemy_ship.hit_segments) == sorted(enemy_ship.locations):
+                    enemy_ship.destroyed = True # Set the destroyed ship's bool to true to signify that it was sunk
                     print("SHIP DESTROYED!\n") # Print that the ship was destroyed
             else: # If the shot did not hit a ship coordinate
                 print("\nMISS!\n") # Print MISS to the console
