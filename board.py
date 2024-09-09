@@ -84,7 +84,6 @@ def printStrikeBoard(player_num: int, player_strike_attempts: list, opponent_shi
                             row_str += convertTextToColor(' O', player_color_dict[abs(player_num-1)]) # Opponent's color for a hit
                         hit = True
                         break
-
                 # If no hit was detected, it's a miss
                 if not hit:
                     row_str += convertTextToColor(' X', 'red')  # Red X for a miss
@@ -243,12 +242,12 @@ def takeTurn(player: Player) -> None:
             player: a Player instance whose turn it is
     """
 
-    printStrikeBoard(player.number, player.strike_attempts, player.ships)
+    enemy = player_one if player.number == 0 else player_zero # Determine the other player
+    printStrikeBoard(player.number, player.strike_attempts, enemy.ships)
     print()
     printBoard(player.number, player.ships)
     print(f"\nPlayer {player.number}'s turn!")
 
-    enemy = player_one if player.number == 0 else player_zero # Determine the other player
     enemy_ship_locations = enemy.getShipLocations() # Determine the ship locations of the other player
 
     while True: # Perform a while loop to avoid duplicate shots
