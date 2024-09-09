@@ -132,7 +132,7 @@ def checkHit(shot: str, enemy: Player) -> None:
 
         Parameters
             shot: a string representing the coordinate of the shot
-            ships: a list of Ships
+            enemy: enemy Player object
     """
     for enemy_ship in enemy.ships:
         for enemy_ship_locations in enemy_ship.locations:
