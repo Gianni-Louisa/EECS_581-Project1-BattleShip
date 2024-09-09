@@ -134,18 +134,22 @@ def checkHit(shot: str, enemy: Player) -> None:
             shot: a string representing the coordinate of the shot
             ships: a list of Ships
     """
-    for enemy_ship in enemy.ships:
-        for enemy_ship_locations in enemy_ship.locations:
-            if shot in enemy_ship_locations: # Check if the shot hit one of the coordinates held in ship locations
-                enemy_ship.hit_segments.append(shot) # Add the section of the ship that was hit to the Ship object's list of hit segments
-                print("\nHIT!\n") # Print HIT to the console
+    hit = False  # Initialize hit as False to prevent issues with the loop
 
-                # Check if all segments of the enemy ship has been hit
-                if sorted(enemy_ship.hit_segments) == sorted(enemy_ship.locations):
-                    enemy_ship.destroyed = True # Set the destroyed ship's bool to true to signify that it was sunk
-                    print("SHIP DESTROYED!\n") # Print that the ship was destroyed
-            else: # If the shot did not hit a ship coordinate
-                print("\nMISS!\n") # Print MISS to the console
+    for enemy_ship in enemy.ships:
+        if shot in enemy_ship.locations:  # Check if the shot hit one of the coordinates held in ship locations
+            enemy_ship.hit_segments.append(shot)  # Add the section of the ship that was hit to the Ship object's list of hit segments
+            print("\nHIT!\n")  # Print HIT to the console
+            hit = True  # Set hit to True
+
+            # Check if all segments of the enemy ship have been hit
+            if sorted(enemy_ship.hit_segments) == sorted(enemy_ship.locations):
+                enemy_ship.destroyed = True  # Set the destroyed ship's bool to true to signify that it was sunk
+                print("SHIP DESTROYED!\n")  # Print that the ship was destroyed
+            break  # Break the loop after a hit
+
+    if not hit:  # If no hit was detected, print MISS
+        print("\nMISS!\n")
 
     
 def shootShip(ship_locations: list) -> str: 
