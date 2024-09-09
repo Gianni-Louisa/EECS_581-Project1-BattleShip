@@ -134,18 +134,22 @@ def checkHit(shot: str, enemy: Player) -> None:
             shot: a string representing the coordinate of the shot
             enemy: enemy Player object
     """
-    for enemy_ship in enemy.ships:
-        for enemy_ship_locations in enemy_ship.locations:
-            if shot in enemy_ship_locations: # Check if the shot hit one of the coordinates held in ship locations
-                enemy_ship.hit_segments.append(shot) # Add the section of the ship that was hit to the Ship object's list of hit segments
-                print("\nHIT!\n") # Print HIT to the console
+    hit = False  # Initialize hit as False to prevent issues with the loop
 
-                # Check if all segments of the enemy ship has been hit
-                if sorted(enemy_ship.hit_segments) == sorted(enemy_ship.locations):
-                    enemy_ship.destroyed = True # Set the destroyed ship's bool to true to signify that it was sunk
-                    print("SHIP DESTROYED!\n") # Print that the ship was destroyed
-            else: # If the shot did not hit a ship coordinate
-                print("\nMISS!\n") # Print MISS to the console
+    for enemy_ship in enemy.ships:
+        if shot in enemy_ship.locations:  # Check if the shot hit one of the coordinates held in ship locations
+            enemy_ship.hit_segments.append(shot)  # Add the section of the ship that was hit to the Ship object's list of hit segments
+            print("\nHIT!\n")  # Print HIT to the console
+            hit = True  # Set hit to True
+
+            # Check if all segments of the enemy ship have been hit
+            if sorted(enemy_ship.hit_segments) == sorted(enemy_ship.locations):
+                enemy_ship.destroyed = True  # Set the destroyed ship's bool to true to signify that it was sunk
+                print("SHIP DESTROYED!\n")  # Print that the ship was destroyed
+            break  # Break the loop after a hit
+
+    if not hit:  # If no hit was detected, print MISS
+        print("\nMISS!\n")
 
     
 def shootShip(ship_locations: list) -> str: 
@@ -184,13 +188,25 @@ def checkWin():
     """
     # Check if all ships of player_zero are destroyed
     if all(ship.destroyed for ship in player_zero.ships):
-        print("Player 1 wins!")
+        print("======================================")
+        print("🎉🎉🎉  CONGRATULATIONS!  🎉🎉🎉")
+        print("======================================")
+        print("      🚢💥 Player 1 Wins! 💥🚢")
+        print("======================================")
+        print("    All enemy ships have been sunk!")
+        print("======================================\n")
         checkWinFlag = False
         return False  # The game ends when player 1 wins
     
     # Check if all ships of player_one are destroyed
     if all(ship.destroyed for ship in player_one.ships):
-        print("Player 0 wins!")
+        print("======================================")
+        print("🎉🎉🎉  CONGRATULATIONS!  🎉🎉🎉")
+        print("======================================")
+        print("      🚢💥 Player 0 Wins! 💥🚢")
+        print("======================================")
+        print("    All enemy ships have been sunk!")
+        print("======================================\n")
         checkWinFlag = False
         return False  # The game ends when player 0 wins
     
