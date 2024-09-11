@@ -7,6 +7,7 @@
     Authors: Connor Bennudriti, Brinley Hull, Gianni Louisa, Kyle Moore, Ben Renner
     Creation Date: 
 """
+from os import system, name #sets the system name to name
 from Ship import Ship
 from Player import Player
 
@@ -99,6 +100,7 @@ def checkWin():
         print("    All enemy ships have been sunk!")
         print("======================================\n")
         checkWinFlag = False
+        printFinalBoards()
         return False  # The game ends when player 1 wins
     
     # Check if all ships of player_one are destroyed
@@ -111,10 +113,16 @@ def checkWin():
         print("    All enemy ships have been sunk!")
         print("======================================\n")
         checkWinFlag = False
+        printFinalBoards()
         return False  # The game ends when player 0 wins
     
     return True  # The game continues if neither player has won yet
 
+def printFinalBoards():
+    print("player 0's board")
+    player_zero.printBoard() 
+    print("\nplayer 1's board\n ")
+    player_one.printBoard()
 
 def takeTurn(player: Player) -> None:
     """
@@ -143,15 +151,16 @@ def takeTurn(player: Player) -> None:
     enemy_ship_locations = enemy.getShipLocations() # Determine the ship locations of the other player
 
     while True: # Perform a while loop to avoid duplicate shots
-        shot = shootShip(enemy_ship_locations) # Allow the player to choose a coordinate to shoot
+        shot = shootShip() # Allow the player to choose a coordinate to shoot
         if shot not in player.strike_attempts: # If the shot has not already been taken
             break # Break out of the loop
         print("Shot already taken.\n") # Notify player that the shot was a duplicate
     checkHit(shot, enemy) # Check to see whether the shot was a hit or miss
     player.strike_attempts.append(shot) # Add the shot taken to the player's strike attempts
 
-    input("Press Enter to continue...\n") # Print a continue game line to the console
-
+    input("Press Enter and pass to the next player...\n") # Print a continue game line to the console
+    clearAndPass()
+    input("Next player press enter to continue")
     '''Team Authored End'''
     
 #//start Chat GPT authored
@@ -330,8 +339,19 @@ def shipPlacement(nShips): #lets each player choose where they want there ships 
             for line_coords in confirmed_coordinates:#input the cords into p2
                 p2_cords.append(line_coords)#adds the cords into p2
             both_selections = True#sets both_selections to false to break the while loop
-        input('Press anything to continue: ') #move on to the next step
+        input('Press Enter and pass to the next player') #move on to the next step
+        clearAndPass()
+        input('Press Enter to continue')
     return p1_cords, p2_cords #returns both players ship coordinates
+
+def clearAndPass():
+    # for windows
+    if name == 'nt': #name is the name of the os the game is running on
+        _ = system('cls') #clear the terminal if on windows
+    # for mac and linux(here, os.name is 'posix')
+    else:
+        _ = system('clear') #clear the terminal if on mac or linux
+
 #//stop team and ChatGPT authored
 def main():
     
