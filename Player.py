@@ -104,7 +104,7 @@ class Player:
             # Print the created string for the current row
             print(self.convertTextToColor(row_str, self.color))
 
-    def printBoard(self) -> None:
+    def printBoard(self, opponent) -> None:
         """
             printBoard()
 
@@ -129,6 +129,23 @@ class Player:
                 if cur_pos in self.getShipLocations():
                     # Print a '+' 
                     row_str += ' +'
+                elif cur_pos in opponent.strike_attempts:
+                    # Go through the opponent ships 
+                    hit = False
+                    for opponent_ship in opponent.ships:
+                        # Check if that position contains an enemy ship
+                        if cur_pos in opponent_ship.locations:
+                            # If the ship is destroyed, print a # in the color of the player
+                            if opponent_ship.destroyed:
+                                row_str += self.convertTextToColor(' #', opponent.color) # Opponent's color for a destroyed ship
+                            else:
+                                row_str += self.convertTextToColor(' O', opponent.color) # Opponent's color for a hit
+                            hit = True
+                            break
+                    # If no hit was detected, it's a miss
+                    if not hit:
+                        row_str += self.convertTextToColor(' X', 'red')  # Red X for a miss
+                # If position has not been shot at by player, print a '.'
                 # If position does not contain a ship
                 else:
                     # Print a '.'

@@ -118,13 +118,14 @@ def checkWin():
     
     return True  # The game continues if neither player has won yet
 
+#prints the final boards for each player after the game is over
 def printFinalBoards():
     print("player 0's board")
-    player_zero.printBoard() 
+    player_zero.printBoard(player_one) 
     print("\nplayer 1's board\n ")
-    player_one.printBoard()
+    player_one.printBoard(player_zero)
 
-def takeTurn(player: Player) -> None:
+def takeTurn(player: Player, opponent: Player) -> None:
     """
         takeTurn(player: Player)
 
@@ -143,7 +144,7 @@ def takeTurn(player: Player) -> None:
     enemy = player_one if player.number == 0 else player_zero # Determine the other player
     player.printStrikeBoard(enemy)
     print()
-    player.printBoard()
+    player.printBoard(opponent)
     print(f"\nPlayer {player.number}'s turn!")
 
     '''Team Authored Start'''
@@ -374,10 +375,10 @@ def main():
     while(checkWinFlag):
 
         # Player 0 turn
-        takeTurn(player_zero) # Player zero takes his turn. Team authored
+        takeTurn(player_zero, player_one) # Player zero takes his turn. Team authored
         if not checkWin():  # Check if Player 0 wins
             break
-        takeTurn(player_one) # Player one takes his turn. Team authored
+        takeTurn(player_one, player_zero) # Player one takes his turn. Team authored
         if not checkWin():  # Check if Player 1 wins
             break
     #//stop team authored
