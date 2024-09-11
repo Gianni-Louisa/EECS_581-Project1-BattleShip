@@ -121,8 +121,10 @@ def checkWin():
 #prints the final boards for each player after the game is over
 def printFinalBoards():
     print("player 0's board")
+    player_zero.printStrikeBoard(player_one)
     player_zero.printBoard(player_one) 
     print("\nplayer 1's board\n ")
+    player_one.printStrikeBoard(player_zero)
     player_one.printBoard(player_zero)
 
 def takeTurn(player: Player, opponent: Player) -> None:

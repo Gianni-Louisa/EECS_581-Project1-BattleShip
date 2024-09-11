@@ -78,6 +78,7 @@ class Player:
         # For each row
         for row in self.rows:
             row_str = f"{row:2} "
+
             # For each column
             for col in self.columns:
                 cur_pos = col+str(row)
@@ -86,7 +87,7 @@ class Player:
                     # Go through the opponent ships 
                     hit = False
                     for opponent_ship in opponent.ships:
-                        # Check if that position contains an enemy ship
+                        # Check if opponent has guessed where our ship is 
                         if cur_pos in opponent_ship.locations:
                             # If the ship is destroyed, print a # in the color of the player
                             if opponent_ship.destroyed:
@@ -120,16 +121,13 @@ class Player:
 
         # For each row
         for row in self.rows:
-            row_str = f"{row:2} "
+            row_str = self.convertTextToColor( f"{row:2} ", self.color)
             # For each column
             for col in self.columns:
                 # Get current location on board
                 cur_pos = col+str(row)
                 # If position contains a ship
-                if cur_pos in self.getShipLocations():
-                    # Print a '+' 
-                    row_str += ' +'
-                elif cur_pos in opponent.strike_attempts:
+                if cur_pos in opponent.strike_attempts:
                     # Go through the opponent ships 
                     hit = False
                     for opponent_ship in opponent.ships:
@@ -145,12 +143,15 @@ class Player:
                     # If no hit was detected, it's a miss
                     if not hit:
                         row_str += self.convertTextToColor(' X', 'red')  # Red X for a miss
+                #print a + if a ship is there
+                elif cur_pos in self.getShipLocations():
+                    # Print a '+' 
+                    row_str += ' +'
                 # If position has not been shot at by player, print a '.'
-                # If position does not contain a ship
                 else:
                     # Print a '.'
-                    row_str += ' .'
-            print(self.convertTextToColor(row_str, self.color))
+                    row_str += self.convertTextToColor(' .', self.color)
+            print(row_str)
         
 
     def getShipLocations(self) -> None:
