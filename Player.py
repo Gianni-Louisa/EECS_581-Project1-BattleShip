@@ -146,7 +146,7 @@ class Player:
                 #print a + if a ship is there
                 elif cur_pos in self.getShipLocations():
                     # Print a '+' 
-                    row_str += ' +'
+                    row_str += self.convertTextToColor(' +', self.color)
                 # If position has not been shot at by player, print a '.'
                 else:
                     # Print a '.'
