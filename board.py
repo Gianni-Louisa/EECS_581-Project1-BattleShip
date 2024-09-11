@@ -13,7 +13,7 @@ from Player import Player
 
 columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
 rows = range(1, 11)
-str_rows = ['1', '2', '3', '4', '5', '6', '7', '8', '9', "10"]
+str_rows = ['1', '2', '3', '4', '5', '6', '7', '8', '9', "10"] # Defining the number of rows of the board for easy string operations. Team authored
 header = '    ' + ' '.join(columns)
 
 player_zero = Player(0, 'green', header, columns, rows)
@@ -24,6 +24,8 @@ player_one = Player(1, 'blue', header, columns, rows)
 def checkHit(shot: str, enemy: Player) -> None:
     """
         checkHit(shot: str, enemy: PLayer)
+
+        Sources: Team authored
 
         Checks whether a shot is a hit or miss and prints the correct message. 
         
@@ -51,17 +53,19 @@ def checkHit(shot: str, enemy: Player) -> None:
         print("\nMISS!\n")
 
     
-def shootShip(ship_locations: list) -> str: 
+def shootShip() -> str: 
     """
         shootShip(ship_locations: list)
+
+        Sources: Team authored
 
         Allows a player to input their desired shot coordinates an6d returns a string representing the coordinates
 
         Parameters
-            ship_locations: a list of enemy Ship locations
+            None
     """
 
-    print("Choose your coordinate to shoot!")
+    print("Choose your coordinate to shoot!") # Print a guiding statement to the user
 
     while True: # Loop to validate the input coordinate
         shot = input("Coordinate: ").upper() # Player inputs coordinate
@@ -111,23 +115,12 @@ def checkWin():
     
     return True  # The game continues if neither player has won yet
 
-    
-def initializeBoard(player_num): # When a player starts setup where they want their ships located NOT DONE
-    if player_num == 0: 
-        return [
-            
-        ]
-    elif player_num == 1:
-        return [
-            
-        ]
-    else:
-        raise Exception("ERROR: invalid player_num")
-
 
 def takeTurn(player: Player) -> None:
     """
         takeTurn(player: Player)
+
+        Sources: Team authored and ?
 
         Prints the board and allows the player to take their shot
         
@@ -137,11 +130,15 @@ def takeTurn(player: Player) -> None:
             player: a Player instance whose turn it is
     """
 
+    '''This section needs comments and sources'''
+
     enemy = player_one if player.number == 0 else player_zero # Determine the other player
     player.printStrikeBoard(enemy)
     print()
     player.printBoard()
     print(f"\nPlayer {player.number}'s turn!")
+
+    '''Team Authored Start'''
 
     enemy_ship_locations = enemy.getShipLocations() # Determine the ship locations of the other player
 
@@ -153,7 +150,9 @@ def takeTurn(player: Player) -> None:
     checkHit(shot, enemy) # Check to see whether the shot was a hit or miss
     player.strike_attempts.append(shot) # Add the shot taken to the player's strike attempts
 
-    input("Press Enter to continue...\n")
+    input("Press Enter to continue...\n") # Print a continue game line to the console
+
+    '''Team Authored End'''
     
 #//Ben R start   
 def create_grid(x_size=10, y_size=10): #chat gpt
@@ -277,6 +276,8 @@ def translateCoordinates(ship_tuples: list) -> list:
     """
         translateCoordinates(ship_tuples)
 
+        Sources: Team authored
+
         Translates ship coordinates from integer tuples to string coordinates, e.g. A3
 
         Returns a list of lists that contain ship locations in the form of string coordinates
@@ -360,15 +361,17 @@ def main():
     for ship_location in translateCoordinates(p2_confirmed_coordinates): # For each ship in player zero's ship placement coordinate list
         player_one.ships.append(Ship(ship_location)) # Add each ship to the player's ship list
 
+    '''Team Authored End'''
+
     #//Ben R end
           
     while(checkWinFlag):
 
         # Player 0 turn
-        takeTurn(player_zero)
+        takeTurn(player_zero) # Player zero takes his turn. Team authored
         if not checkWin():  # Check if Player 0 wins
             break
-        takeTurn(player_one)
+        takeTurn(player_one) # Player one takes his turn. Team authored
         if not checkWin():  # Check if Player 1 wins
             break
 

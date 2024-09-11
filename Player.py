@@ -3,7 +3,7 @@
     Description: Creates a class to hold Player object information
     Inputs: 
     Outputs: 
-    Sources of code: Team authored
+    Sources of code: Team authored and ?
     Authors: Connor Bennudriti, Brinley Hull, Gianni Louisa, Kyle Moore, Ben Renner
     Creation Date: 9/7/2024
 """
@@ -13,6 +13,8 @@ class Player:
     def __init__(self, number: int, color: str, header: str, columns: list, rows: list):
         """
             __init__(self, number: int)
+
+            Sources: Team authored
 
             Initializes player class instance
 
@@ -38,6 +40,8 @@ class Player:
         """
             convertTextToColor(color: str, text: str)
 
+            Sources: 
+
             Function to get the ascii for a string to display it as a given color ('green', 'blue', or 'red')
 
             Parameters:
@@ -59,6 +63,8 @@ class Player:
     def printStrikeBoard(self, opponent) -> None: 
         """
             printStrikeBoard(opponent: Player)
+
+            Sources:
 
             Prints the board with specified player's strikes on it (misses and hits)
 
@@ -102,6 +108,8 @@ class Player:
         """
             printBoard()
 
+            Sources:
+
             Prints player's board with their ships on it
 
             Parameters
@@ -131,6 +139,8 @@ class Player:
     def getShipLocations(self) -> None:
         """
             getShipLocations(self)
+
+            Sources: Team authored
 
             Returns list of string ship locations/coordinates
 
