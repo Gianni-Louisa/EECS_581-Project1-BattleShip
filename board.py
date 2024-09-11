@@ -154,124 +154,114 @@ def takeTurn(player: Player) -> None:
 
     '''Team Authored End'''
     
-#//Ben R start   
-def create_grid(x_size=10, y_size=10): #chat gpt
-    # Create a grid filled with '.'
-    return [['.' for _ in range(y_size)] for _ in range(x_size)]
+#//start Chat GPT authored
+def create_grid(x_size=10, y_size=10): #function that creates a grid filled with '.'
+    return [['.' for _ in range(y_size)] for _ in range(x_size)] #fills the grid filled with '.'
 
-def add_line_to_grid(grid, line_pos_x, line_pos_y, size, horizontal=True): #chat gpt
-    # Add a line of 'size' '#' characters to the grid temporarily
-    temp_grid = [row[:] for row in grid]  # Make a copy of the grid
-    for i in range(size):
-        if horizontal:
+def add_line_to_grid(grid, line_pos_x, line_pos_y, size, horizontal=True): #function that adds a line of '#' characters to the grid temporarily to represent a ship
+    temp_grid = [row[:] for row in grid]  #used to make a copy of the grid
+    for i in range(size): #given a certian size of ship, enter a line into the grid
+        if horizontal: #if the line is horizontal, input in this fashion
             temp_grid[line_pos_x][line_pos_y + i] = '#'
-        else:
+        else: #the line is vertical, input in in this fashion
             temp_grid[line_pos_x + i][line_pos_y] = '#'
-    return temp_grid
-
-def add_confirm_to_grid(grid, line_pos_x, line_pos_y, size, horizontal=True): #me
-    # Add a line of 'size' '+' characters permanently to the grid
-    for i in range(size):
-        if horizontal:
+    return temp_grid #return the updated grid
+#//stop Chat GPT authored
+#//start team authored
+def add_confirm_to_grid(grid, line_pos_x, line_pos_y, size, horizontal=True): #function that adds a line of '+' to the grid to represent a confirmed ship placement
+    for i in range(size): #runs for the total size of the ship
+        if horizontal: #if the line is horizontal, input in this fashion
             grid[line_pos_x][line_pos_y + i] = '+'
-        else:
+        else: #the line is vertial, input in this fashion
             grid[line_pos_x + i][line_pos_y] = '+'
-    return grid
-
-def get_line_coordinates(line_pos_x, line_pos_y, size, horizontal=True): #chat gpt
-    # Generate a list of coordinates for the line
-    coordinates = []
-    for i in range(size):
-        if horizontal:
+    return grid #return the updated grid
+#//stop team authored
+#//start Chat GPT authored
+def get_line_coordinates(line_pos_x, line_pos_y, size, horizontal=True): #function that returns each coord the ship is on
+    coordinates = [] #initialize a list to hold the ship cords
+    for i in range(size): #runs for the total ship size
+        if horizontal: #if the ship is horizontal, append in this fashion
             coordinates.append((line_pos_x, line_pos_y + i))
-        else:
+        else: #the ship is vertical, append in this fashion
             coordinates.append((line_pos_x + i, line_pos_y))
-    return coordinates
+    return coordinates #return the finished list
 
-def check_overlap(grid, line_pos_x, line_pos_y, size, horizontal=True): #chat gpt
-    # Check if the new line overlaps with any '+' on the grid
-    for i in range(size):
-        if horizontal:
-            if grid[line_pos_x][line_pos_y + i] == '+':
-                return True  # Overlap detected
-        else:
-            if grid[line_pos_x + i][line_pos_y] == '+':
-                return True  # Overlap detected
-    return False  # No overlap
+def check_overlap(grid, line_pos_x, line_pos_y, size, horizontal=True): #function that check if a ship is overlapping a previously confirmed ship
+    for i in range(size): #check for the entire length of the ship
+        if horizontal: #if the ship is horizontal, check in this fashion
+            if grid[line_pos_x][line_pos_y + i] == '+': #if there is a plus in this position, return true
+                return True  #overlap detected
+        else: #the ship is horizontal, check in the fashion
+            if grid[line_pos_x + i][line_pos_y] == '+': #if there is a plus in this position, return true
+                return True  #overlap detected
+    return False #there is no overlap, return false
 
-def display_grid(grid): #chat gpt
-    # Display the current state of the grid
-    for row in grid:
-        print(" ".join(row))
+def display_grid(grid): #prints out the current grid
+    for row in grid: #prints a row
+        print(" ".join(row)) #prints each element in a row
     print()
 
-def move_line(grid, size, p1_selection): #chat gpt
-    x_size, y_size = len(grid), len(grid[0])
-    horizontal = True  # Start with a horizontal line
+def move_line(grid, size, p1_selection): #moves and places a line of a given size on the grid
+    x_size, y_size = len(grid), len(grid[0]) #gives the demensions of the grid to x_size and y_size
+    horizontal = True  #start with a horizontal line
 
-    # Start the line in the center of the grid
+    #Puts the line in the center of the grid
     line_pos_x = x_size // 2
     line_pos_y = (y_size - size) // 2
 
-    while True:
-        # Display the grid with the current line
-        temp_grid = add_line_to_grid(grid, line_pos_x, line_pos_y, size, horizontal)  # Temporary grid with current line
-        if p1_selection == False:#me
-            print("Player 1 Ship Placement Selection!")#me
+    while True: #runs until the line is confirmed
+        temp_grid = add_line_to_grid(grid, line_pos_x, line_pos_y, size, horizontal)  #creates a temproary version of the grid with the current line's position
+        if p1_selection == False:#checks to see if p1 has confirmed a final board
+            print("Player 1 Ship Placement Selection!")#they havent
         else:#me
-            print("Player 2 Ship Placement Selection!")#me
-        display_grid(temp_grid)
+            print("Player 2 Ship Placement Selection!")#they have
+        display_grid(temp_grid)#print the grid
 
-        # Get user input for movement
-        move = input("Move (W=up, A=left, S=down, D=right, R=rotate, C=confirm, Q=quit): ").upper()
+        move = input("Move (W=up, A=left, S=down, D=right, R=rotate, C=confirm, Q=quit): ").upper() #gets the users input and converts it to an uppercase char
+        if move == 'W' and line_pos_x > 0:  #if input is w and the player wont go out of bounds, move the line up
+            line_pos_x -= 1 #moves the line up
+        elif move == 'S' and (line_pos_x < x_size - 1 if horizontal else line_pos_x + size - 1 < x_size - 1): #if input is s and the player wont go out of bounds, move the line down
+            line_pos_x += 1 #moves the line down
+        elif move == 'A' and line_pos_y > 0: #if input is a and the player wont go out of bounds, move the line left
+            line_pos_y -= 1 #moves the line left
+        elif move == 'D' and (line_pos_y < y_size - 1 if not horizontal else line_pos_y + size - 1 < y_size - 1): #if input is d and the player wont go out of bounds, move the line right
+            line_pos_y += 1 #moves the line right
+        elif move == 'R': #if input is r and the player wont go out of bounds, rotate the line
+            mid_offset = size // 2  #rotates the line around its center
 
-        # Handle movement with bounds checking
-        if move == 'W' and line_pos_x > 0:  # Move up
-            line_pos_x -= 1
-        elif move == 'S' and (line_pos_x < x_size - 1 if horizontal else line_pos_x + size - 1 < x_size - 1):  # Move down
-            line_pos_x += 1
-        elif move == 'A' and line_pos_y > 0:  # Move left
-            line_pos_y -= 1
-        elif move == 'D' and (line_pos_y < y_size - 1 if not horizontal else line_pos_y + size - 1 < y_size - 1):  # Move right
-            line_pos_y += 1
-        elif move == 'R':  # Rotate the line around its center
-            mid_offset = size // 2  # Offset from the start to the center of the line
-
-            if horizontal:  # Rotate to vertical
+            if horizontal: #if the line is horizontal, rotate it to be vertical
                 new_pos_x = line_pos_x - mid_offset
                 new_pos_y = line_pos_y + mid_offset
 
-                # Ensure the vertical line fits in bounds
-                if new_pos_x >= 0 and new_pos_x + size <= x_size:
-                    line_pos_x = new_pos_x
+                if new_pos_x >= 0 and new_pos_x + size <= x_size: #checks to see if the new line position is in bounds
+                    line_pos_x = new_pos_x #it is, continue
                     line_pos_y = new_pos_y
                     horizontal = False
-                else:
+                else: #its not, error
                     print("Not enough space to rotate!")
-            else:  # Rotate to horizontal
+            else: #if the line is vertical, rotate it to be horizontal
                 new_pos_x = line_pos_x + mid_offset
                 new_pos_y = line_pos_y - mid_offset
 
-                # Ensure the horizontal line fits in bounds
-                if new_pos_y >= 0 and new_pos_y + size <= y_size:
-                    line_pos_x = new_pos_x
+                if new_pos_y >= 0 and new_pos_y + size <= y_size: #checks to see if the new line position is in bounds
+                    line_pos_x = new_pos_x #it is, continue
                     line_pos_y = new_pos_y
                     horizontal = True
-                else:
+                else: #its not, error
                     print("Not enough space to rotate!")
-        elif move == 'C':  # Confirm and save current line
-            if check_overlap(grid, line_pos_x, line_pos_y, size, horizontal):
+        elif move == 'C': #if the input is c, confirm the line
+            if check_overlap(grid, line_pos_x, line_pos_y, size, horizontal): #checks to make sure this line will not overlap with any other already confirmed lnes
                 print("Overlap detected! Move the line to a new position.")
             else:
-                grid = add_confirm_to_grid(grid, line_pos_x, line_pos_y, size, horizontal)
-                coordinates = get_line_coordinates(line_pos_x, line_pos_y, size, horizontal)
-                print("Line confirmed at position!")
-                return (grid, coordinates)  # Return the updated grid and the coordinates of the line
-        elif move == 'Q':  # Quit the game
-            return (None, None)  # Return None to exit the loop
-        else:
+                grid = add_confirm_to_grid(grid, line_pos_x, line_pos_y, size, horizontal) #add the confirmed line to the grid
+                coordinates = get_line_coordinates(line_pos_x, line_pos_y, size, horizontal) #adds the line cords to coordinates
+                print("Line confirmed at position!") 
+                return (grid, coordinates)  #returns the updated grid and the coordinates of the line
+        elif move == 'Q': #if the input is q, quit the game
+            return (None, None) #return none to exit the loop
+        else: #invalid input, error
             print("Invalid move! Please use W, A, S, D, R, C, or Q.")
-
+#//stop Chat GPT authored
 def translateCoordinates(ship_tuples: list) -> list:
     """
         translateCoordinates(ship_tuples)
@@ -309,8 +299,8 @@ def goodInput(): #runs until the user inputs a valid number of ships, then retur
             print("Error! Please input a valid number of ships to start.") #print error and try again
     return numofShips #returns numofShips
 #//stop team authored
-#//start of team and ChatGPT authored
-def shipPlacement(nShips):
+#//start team and ChatGPT authored
+def shipPlacement(nShips): #lets each player choose where they want there ships to be placed, and returns each players confirmed coordinates
     p1_cords = [] #initializes p1's cords
     p2_cords = [] #initializes p2's cords
     p1_selection = False #sets p1_selection to false
@@ -342,10 +332,10 @@ def shipPlacement(nShips):
             both_selections = True#sets both_selections to false to break the while loop
         input('Press anything to continue: ') #move on to the next step
     return p1_cords, p2_cords #returns both players ship coordinates
-#//stop of team and ChatGPT authored
+#//stop team and ChatGPT authored
 def main():
     
-    #//start of team authored
+    #//start team authored
     p1_confirmed_coordinates = [] #initialize p1's cords
     p2_confirmed_coordinates = [] #initialize p2's cords
     numShips = goodInput() #calls goodInput and returns a valid number of ships for the game.
@@ -353,7 +343,7 @@ def main():
     if result is None: #checks if the player quit
         return #quit the game
     p1_confirmed_coordinates, p2_confirmed_coordinates = result
-    #//stop of team authored
+    
     
     for ship_location in translateCoordinates(p1_confirmed_coordinates): # For each ship in player zero's ship placement coordinate list
         player_zero.ships.append(Ship(ship_location)) # Add each ship to the player's ship list
@@ -361,10 +351,6 @@ def main():
     for ship_location in translateCoordinates(p2_confirmed_coordinates): # For each ship in player zero's ship placement coordinate list
         player_one.ships.append(Ship(ship_location)) # Add each ship to the player's ship list
 
-    '''Team Authored End'''
-
-    #//Ben R end
-          
     while(checkWinFlag):
 
         # Player 0 turn
@@ -374,7 +360,7 @@ def main():
         takeTurn(player_one) # Player one takes his turn. Team authored
         if not checkWin():  # Check if Player 1 wins
             break
-
+    #//stop team authored
     
 main()
 
