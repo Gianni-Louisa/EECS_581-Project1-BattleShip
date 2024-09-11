@@ -7,7 +7,6 @@
     Authors: Connor Bennudriti, Brinley Hull, Gianni Louisa, Kyle Moore, Ben Renner
     Creation Date: 
 """
-
 from Ship import Ship
 from Player import Player
 
@@ -270,11 +269,9 @@ def move_line(grid, size, p1_selection): #chat gpt
                 print("Line confirmed at position!")
                 return (grid, coordinates)  # Return the updated grid and the coordinates of the line
         elif move == 'Q':  # Quit the game
-            print("Game ended.")
             return (None, None)  # Return None to exit the loop
         else:
             print("Invalid move! Please use W, A, S, D, R, C, or Q.")
-#//Ben R end     
 
 def translateCoordinates(ship_tuples: list) -> list:
     """
@@ -297,57 +294,66 @@ def translateCoordinates(ship_tuples: list) -> list:
         all_ship_coordinates.append(ship_coordinates) # Add the list of ship coordinates to the list of ships
     
     return all_ship_coordinates # Return the translated ship coordinates
-
-def main():
-    
-    #//Ben R start
-    p1_confirmed_coordinates = [] #//me
-    p2_confirmed_coordinates = [] #me
-    p1_selection = False #me
-    both_selections = False #me
+#//start team authored
+def goodInput(): #runs until the user inputs a valid number of ships, then returns
     valid_num_ships = ['1','2','3','4','5'] #used to check if user chose the correct number of ships
-    goodInput = False #used for while loop to check for a correct input num of ships
-    
-    #choosing the number of ships 
-    print("Welcome to Battle Ship!")
-    while goodInput == False: #runs until we get a good input
-        numShips = input("Choose the number of ships you wish to play with! (1-5): ") #inputted number of ships for the game
-        if numShips in valid_num_ships: #used to break the loop if numShips in valid_num_ships
-            goodInput = True #break loop
-            numShips = int(numShips) #now we want it to be a type int for later
+    goodIn = False #used for while loop to check for a correct input num of ships
+    print("Welcome to Battle Ship!") #prints statement 
+    while goodIn == False: #runs until we get a good input
+        numofShips = input("Choose the number of ships you wish to play with! (1-5): ") #inputted number of ships for the game
+        if numofShips in valid_num_ships: #used to break the loop if numofShips in valid_num_ships
+            goodIn = True #break loop
+            numofShips = int(numofShips) #turns numofShips into an int
         else:
             print("Error! Please input a valid number of ships to start.") #print error and try again
-    #//Ben R end
+    return numofShips #returns numofShips
+#//stop team authored
+#//start of team and ChatGPT authored
+def shipPlacement(nShips):
+    p1_cords = [] #initializes p1's cords
+    p2_cords = [] #initializes p2's cords
+    p1_selection = False #sets p1_selection to false
+    both_selections = False #sets both_selections to false
     
-    #//Ben R start ship placement
-    while both_selections == False: #me
-        # Initialize an empty grid
-        x_size, y_size = 10, 10 #chatgpt
-        grid = create_grid(x_size, y_size)#chatgpt
-        confirmed_coordinates = []  # List to store the coordinates of confirmed lines
-        temp_numShips = numShips#me
-        while temp_numShips > 0:  # Continue until the line size reaches 0#chatgpt
-            result = move_line(grid, temp_numShips, p1_selection)  # Pass the existing grid to keep confirmed lines
-            grid, line_coordinates = result#chatgpt
-            if grid is None:  # Player chose to quit
-                print("Game quit.")
-                return  # Exit the main function
-            confirmed_coordinates.append(line_coordinates)  # Save the coordinates of the confirmed line
-            temp_numShips -= 1  # Decrease the size of the line after each confirmation
+    while both_selections == False: #runs until both p1 and p2's cords are confirmed
+        x_size, y_size = 10, 10 #sets to temp board's width and height
+        grid = create_grid(x_size, y_size) #initializes a 10x10 grid
+        confirmed_coordinates = []  #temporary list to store a players confirmed cords
+        temp_numShips = nShips #creats a temporary number of ships for itiration
+        while temp_numShips > 0:  # runs until there are no more ships to place
+            grid, line_coordinates = move_line(grid, temp_numShips, p1_selection)  #calls move_line wich returns an updated grid and the cord's of the moved line
+            if grid is None:  # checks to see if the player wishes to quit
+                print("Game quit.") #print statement
+                return  None# return none to quit the game
+            confirmed_coordinates.append(line_coordinates)  #input the confirmed coordinates into the confirmed list
+            temp_numShips -= 1  #decrement temp_numShips by 1
 
-        # Final board after all lines have been placed
-        print("Final board:")#me
-        display_grid(grid)#me
-        if p1_selection == False:#me
-            for line_coords in confirmed_coordinates:#me
-                p1_confirmed_coordinates.append(line_coords)#me
-            p1_selection = True#me
-        else:#me
-            for line_coords in confirmed_coordinates:#me
-                p2_confirmed_coordinates.append(line_coords)#me
-            both_selections = True#me
-        input('Press anything to continue: ') #me
-
+        #print the final board after all lines have been placed
+        print("Final board:")#print statement
+        display_grid(grid)#calls display_grid which will print the final grid
+        if p1_selection == False:#checks to see if p1's cordinates have been fully confirmed
+            for line_coords in confirmed_coordinates:# it hasnt, input coords into p1
+                p1_cords.append(line_coords)#adds the cords into p1
+            p1_selection = True#sets p1_selection to true
+        else:#p1 has already confirmed there cords
+            for line_coords in confirmed_coordinates:#input the cords into p2
+                p2_cords.append(line_coords)#adds the cords into p2
+            both_selections = True#sets both_selections to false to break the while loop
+        input('Press anything to continue: ') #move on to the next step
+    return p1_cords, p2_cords #returns both players ship coordinates
+#//stop of team and ChatGPT authored
+def main():
+    
+    #//start of team authored
+    p1_confirmed_coordinates = [] #initialize p1's cords
+    p2_confirmed_coordinates = [] #initialize p2's cords
+    numShips = goodInput() #calls goodInput and returns a valid number of ships for the game.
+    result = shipPlacement(numShips) #calls shipPlacement and returns two lists containing each players ship coordinates or None if the player decides to quit
+    if result is None: #checks if the player quit
+        return #quit the game
+    p1_confirmed_coordinates, p2_confirmed_coordinates = result
+    #//stop of team authored
+    
     for ship_location in translateCoordinates(p1_confirmed_coordinates): # For each ship in player zero's ship placement coordinate list
         player_zero.ships.append(Ship(ship_location)) # Add each ship to the player's ship list
 
