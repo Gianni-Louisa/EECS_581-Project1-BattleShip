@@ -112,19 +112,6 @@ def checkWin():
     
     return True  # The game continues if neither player has won yet
 
-    
-def initializeBoard(player_num): # When a player starts setup where they want their ships located NOT DONE
-    if player_num == 0: 
-        return [
-            
-        ]
-    elif player_num == 1:
-        return [
-            
-        ]
-    else:
-        raise Exception("ERROR: invalid player_num")
-
 
 def takeTurn(player: Player) -> None:
     """
