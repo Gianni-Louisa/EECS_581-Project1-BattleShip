@@ -128,16 +128,16 @@ class Player:
                 cur_pos = col+str(row)
                 # If position contains a ship
                 if cur_pos in opponent.strike_attempts:
-                    # Go through the opponent ships 
+                   
                     hit = False
-                    for opponent_ship in opponent.ships:
-                        # Check if that position contains an enemy ship
-                        if cur_pos in opponent_ship.locations:
-                            # If the ship is destroyed, print a # in the color of the player
-                            if opponent_ship.destroyed:
-                                row_str += self.convertTextToColor(' #', opponent.color) # Opponent's color for a destroyed ship
+                    for my_ship in self.ships:
+                       
+                        if cur_pos in my_ship.locations:
+
+                            if my_ship.destroyed:
+                                row_str += self.convertTextToColor(' #', 'red') 
                             else:
-                                row_str += self.convertTextToColor(' O', opponent.color) # Opponent's color for a hit
+                                row_str += self.convertTextToColor(' O', 'red') 
                             hit = True
                             break
                     # If no hit was detected, it's a miss

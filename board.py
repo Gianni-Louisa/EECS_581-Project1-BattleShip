@@ -347,6 +347,7 @@ def shipPlacement(nShips): #lets each player choose where they want there ships 
         input('Press Enter to continue')
     return p1_cords, p2_cords #returns both players ship coordinates
 
+#inspiration from geek for geeks
 def clearAndPass():
     # for windows
     if name == 'nt': #name is the name of the os the game is running on
@@ -366,7 +367,6 @@ def main():
     if result is None: #checks if the player quit
         return #quit the game
     p1_confirmed_coordinates, p2_confirmed_coordinates = result
-    
     
     for ship_location in translateCoordinates(p1_confirmed_coordinates): # For each ship in player zero's ship placement coordinate list
         player_zero.ships.append(Ship(ship_location)) # Add each ship to the player's ship list
