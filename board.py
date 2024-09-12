@@ -38,7 +38,7 @@ def checkHit(shot: str, enemy: Player) -> None:
     """
     hit = False  # Initialize hit as False to prevent issues with the loop
 
-    for enemy_ship in enemy.ships:
+    for enemy_ship in enemy.ships: # Loop through all of the other player's ships
         if shot in enemy_ship.locations:  # Check if the shot hit one of the coordinates held in ship locations
             enemy_ship.hit_segments.append(shot)  # Add the section of the ship that was hit to the Ship object's list of hit segments
             print("\nHIT!\n")  # Print HIT to the console
@@ -121,7 +121,7 @@ def takeTurn(player: Player) -> None:
     """
         takeTurn(player: Player)
 
-        Sources: Team authored and ?
+        Sources: Team authored
 
         Prints the board and allows the player to take their shot
         
@@ -131,15 +131,11 @@ def takeTurn(player: Player) -> None:
             player: a Player instance whose turn it is
     """
 
-    '''This section needs comments and sources'''
-
     enemy = player_one if player.number == 0 else player_zero # Determine the other player
-    player.printStrikeBoard(enemy)
-    print()
-    player.printBoard()
-    print(f"\nPlayer {player.number}'s turn!")
-
-    '''Team Authored Start'''
+    player.printStrikeBoard(enemy) # Print the player's strike board
+    print() # Print just a new line for formatting
+    player.printBoard() # Print the player's board
+    print(f"\nPlayer {player.number}'s turn!") # Print which player's turn it is
 
     enemy_ship_locations = enemy.getShipLocations() # Determine the ship locations of the other player
 
@@ -152,8 +148,6 @@ def takeTurn(player: Player) -> None:
     player.strike_attempts.append(shot) # Add the shot taken to the player's strike attempts
 
     input("Press Enter to continue...\n") # Print a continue game line to the console
-
-    '''Team Authored End'''
     
 #//Ben R start   
 def create_grid(x_size=10, y_size=10): #chat gpt
