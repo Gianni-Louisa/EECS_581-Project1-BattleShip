@@ -15,4 +15,13 @@ class Ship:
         self.destroyed: bool = False
 
     def hit(self):
+        '''
+        isDestroyed = True
+        for i in self.locations:
+            if i in self.hit_segments:
+                isDestoryed = True
+            else:
+                break
+        '''
+        
         self.destroyed = True
