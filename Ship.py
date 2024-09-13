@@ -1,9 +1,9 @@
 """ 
     Program name: Ship.py
-    Description: 
-    Inputs: 
-    Outputs: 
-    Sources of code: 
+    Description: defines the ship type
+    Inputs: a list of locations
+    Outputs: a ship object 
+    Sources of code: None
     Authors: Connor Bennudriti, Brinley Hull, Gianni Louisa, Kyle Moore, Ben Renner
     Creation Date: 
 """
