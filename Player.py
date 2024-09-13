@@ -60,7 +60,8 @@ class Player:
         else:
             raise Exception("ERROR: Invalid color string provided")
 
-    def printStrikeBoard(self, opponent) -> None: 
+    #Gianni Louisa and Connor authored, chatgpt assisted
+    def printStrikeBoard(self, opponent) -> None: # Print the board with the opponent's strikes on it
         """
             printStrikeBoard(opponent: Player)
 
@@ -73,39 +74,31 @@ class Player:
         """
 
         # Print column names
-        print(self.convertTextToColor(self.header, self.color))
+        print(self.convertTextToColor(self.header, self.color)) # Given the header string, print it in the player's color, determined by the object
 
         # For each row
-        for row in self.rows:
-            row_str = f"{row:2} "
-
-            # For each column
-            for col in self.columns:
-                cur_pos = col+str(row)
-                # If the current position has been shot at by the player
-                if cur_pos in self.strike_attempts:
-                    # Go through the opponent ships 
-                    hit = False
-                    for opponent_ship in opponent.ships:
-                        # Check if opponent has guessed where our ship is 
-                        if cur_pos in opponent_ship.locations:
-                            # If the ship is destroyed, print a # in the color of the player
-                            if opponent_ship.destroyed:
-                                row_str += self.convertTextToColor(' #', opponent.color) # Opponent's color for a destroyed ship
+        for row in self.rows: # For each row in the player's row list
+            row_str = f"{row:2} " # Initialize the row string with the row number
+            for col in self.columns: # For each column in the player's column list
+                cur_pos = col+str(row) # Get the current position on the board
+                if cur_pos in self.strike_attempts: # If the current position is in the player's strike attempts
+                    hit = False # Initialize hit to False
+                    for opponent_ship in opponent.ships: # For each ship in the opponent's ship list
+                        if cur_pos in opponent_ship.locations: # If the current position is in the opponent's ship locations
+                            if opponent_ship.destroyed: # If the opponent's ship is destroyed
+                                row_str += self.convertTextToColor(' #', opponent.color) #show opponents color # for a destroyed ship in that location
                             else:
-                                row_str += self.convertTextToColor(' O', opponent.color) # Opponent's color for a hit
-                            hit = True
-                            break
-                    # If no hit was detected, it's a miss
-                    if not hit:
-                        row_str += self.convertTextToColor(' X', 'red')  # Red X for a miss
-                # If position has not been shot at by player, print a '.'
-                else:
-                    row_str += self.convertTextToColor(' .', self.color) 
-            # Print the created string for the current row
-            print(self.convertTextToColor(row_str, self.color))
+                                row_str += self.convertTextToColor(' O', opponent.color) #show opponents color O for a hit on a ship in that location
+                            hit = True # Set hit to True
+                            break # Break out of the loop
+                    if not hit: # If no hit was detected
+                        row_str += self.convertTextToColor(' X', 'red')  # Red X on strike for a miss
+                else: # If the current position is not in the player's strike attempts
+                    row_str += self.convertTextToColor(' .', self.color)  # Print a '.' in the player's color
+            print(self.convertTextToColor(row_str, self.color)) # Print the row string in the player's color
 
-    def printBoard(self, opponent) -> None:
+    #Gianni Louisa and Connor authored, chatgpt assisted
+    def printBoard(self, opponent) -> None: # Print the board with the player's ships on it, this is the normal board(bottom board)
         """
             printBoard()
 
@@ -116,42 +109,29 @@ class Player:
             Parameters
                 None
         """
-        # Print column names
-        print(self.convertTextToColor(self.header, self.color))
-
-        # For each row
-        for row in self.rows:
-            row_str = self.convertTextToColor( f"{row:2} ", self.color)
-            # For each column
-            for col in self.columns:
-                # Get current location on board
-                cur_pos = col+str(row)
-                # If position contains a ship
-                if cur_pos in opponent.strike_attempts:
-                   
-                    hit = False
-                    for my_ship in self.ships:
-                       
-                        if cur_pos in my_ship.locations:
-
-                            if my_ship.destroyed:
-                                row_str += self.convertTextToColor(' #', 'red') 
-                            else:
-                                row_str += self.convertTextToColor(' O', 'red') 
-                            hit = True
-                            break
+        print(self.convertTextToColor(self.header, self.color)) # Print the header string in the player's color, uses objects color attribute
+        for row in self.rows: # For each row in the player's row list
+            row_str = self.convertTextToColor( f"{row:2} ", self.color) # Initialize the row string with the row number in the player's color
+            for col in self.columns: # For each column in the player's column list
+                cur_pos = col+str(row) # Get the current position on the board
+                if cur_pos in opponent.strike_attempts: # If the current position is in the opponent's strike attempts
+                    hit = False # Initialize hit to False
+                    for my_ship in self.ships: # For each ship in the player's ship list
+                        if cur_pos in my_ship.locations: # If the current position is in the player's ship locations
+                            if my_ship.destroyed: # If the player's ship is destroyed
+                                row_str += self.convertTextToColor(' #', 'red')  # Red # for a destroyed ship on my board. 
+                            else: # If the player's ship is not destroyed
+                                row_str += self.convertTextToColor(' O', 'red')  # Red O for a hit on a ship on my board
+                            hit = True # Set hit to True
+                            break # Break out of the loop
                     # If no hit was detected, it's a miss
                     if not hit:
-                        row_str += self.convertTextToColor(' X', 'red')  # Red X for a miss
-                #print a + if a ship is there
-                elif cur_pos in self.getShipLocations():
-                    # Print a '+' 
-                    row_str += self.convertTextToColor(' +', self.color)
-                # If position has not been shot at by player, print a '.'
-                else:
-                    # Print a '.'
-                    row_str += self.convertTextToColor(' .', self.color)
-            print(row_str)
+                        row_str += self.convertTextToColor(' X', 'red')  # Red X for a miss on my board
+                elif cur_pos in self.getShipLocations(): # If the current position is in the player's ship locations
+                    row_str += self.convertTextToColor(' +', self.color) # Print a '+' in the player's color
+                else: # If the current position is not in the player's strike attempts or the player's ship locations
+                    row_str += self.convertTextToColor(' .', self.color) # Print a '.' in the player's color
+            print(row_str) # Print the row string
         
 
     def getShipLocations(self) -> None:

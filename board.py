@@ -5,19 +5,19 @@
     Outputs: 
     Sources of code: 
     Authors: Connor Bennudriti, Brinley Hull, Gianni Louisa, Kyle Moore, Ben Renner
-    Creation Date: 
+    Creation Date: 8/29/2024
 """
 from os import system, name #sets the system name to name
 from Ship import Ship
 from Player import Player
 
 
-columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J']
-rows = range(1, 11)
+columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'] # Defining the column letters to be used for the cordinates
+rows = range(1, 11) # Range of rows that should be used for the board. In this case 11 rows, 1 for each number 1-10 and 1 for the header.
 str_rows = ['1', '2', '3', '4', '5', '6', '7', '8', '9', "10"] # Defining the number of rows of the board for easy string operations. Team authored
-header = '    ' + ' '.join(columns)
+header = '    ' + ' '.join(columns) # Defining the header of the board. # ChatGPT Assisted
 
-player_zero = Player(0, 'green', header, columns, rows)
+player_zero = Player(0, 'green', header, columns, rows) 
 player_one = Player(1, 'blue', header, columns, rows)
 
         
@@ -80,40 +80,38 @@ def shootShip() -> str:
     
 
     
-checkWinFlag = True  
+#Gianni Louisa Authored, chatgpt assisted
 def checkWin():
     """
-        checkWin()
-
-        Checks whether any player has won by destroying all the opponent's ships.
+        checkWin()    
+    
+        Checks all the players ships to see if they have been destoryed. If all ships are destroyed, the game ends and the winner is printed to the console.
         
-        Returns True if the game should continue (no one has won), 
-        or False if any player has won (all opponent's ships are destroyed).
+        Returns True if the game should continue, 
+        Returns False if game is won and should end.
     """
     # Check if all ships of player_zero are destroyed
-    if all(ship.destroyed for ship in player_zero.ships):
-        print("======================================")
-        print("🎉🎉🎉  CONGRATULATIONS!  🎉🎉🎉")
-        print("======================================")
-        print("      🚢💥 Player 1 Wins! 💥🚢")
-        print("======================================")
-        print("    All enemy ships have been sunk!")
-        print("======================================\n")
-        checkWinFlag = False
-        printFinalBoards()
+    if all(ship.destroyed for ship in player_zero.ships):#for every ship in player_zero's ships, check if they are true for destroyed
+        print("======================================")#print-out
+        print("🎉🎉🎉  CONGRATULATIONS!  🎉🎉🎉")#print-out
+        print("======================================")#print-out
+        print("      🚢💥 Player 1 Wins! 💥🚢")#print-out
+        print("======================================")#print-out
+        print("    All enemy ships have been sunk!")#print-out
+        print("======================================\n")#print-out
+        printFinalBoards() #prints the final boards for each player after the game is over
         return False  # The game ends when player 1 wins
     
     # Check if all ships of player_one are destroyed
-    if all(ship.destroyed for ship in player_one.ships):
-        print("======================================")
-        print("🎉🎉🎉  CONGRATULATIONS!  🎉🎉🎉")
-        print("======================================")
-        print("      🚢💥 Player 0 Wins! 💥🚢")
-        print("======================================")
-        print("    All enemy ships have been sunk!")
-        print("======================================\n")
-        checkWinFlag = False
-        printFinalBoards()
+    if all(ship.destroyed for ship in player_one.ships):#for every ship in player_one's ships, check if they are true for destroyed
+        print("======================================") #print-out
+        print("🎉🎉🎉  CONGRATULATIONS!  🎉🎉🎉")#print-out
+        print("======================================")#print-out
+        print("      🚢💥 Player 0 Wins! 💥🚢")#print-out
+        print("======================================")#print-out
+        print("    All enemy ships have been sunk!")#print-out
+        print("======================================\n")#print-out
+        printFinalBoards() #prints the final boards for each player after the game is over
         return False  # The game ends when player 0 wins
     
     return True  # The game continues if neither player has won yet
@@ -370,16 +368,16 @@ def main():
     for ship_location in translateCoordinates(p2_confirmed_coordinates): # For each ship in player zero's ship placement coordinate list
         player_one.ships.append(Ship(ship_location)) # Add each ship to the player's ship list
 
-    while(checkWinFlag):
+    while(True):#runs until checkwin returns false and the game ends and breaks the loop
 
         # Player 0 turn
         takeTurn(player_zero, player_one) # Player zero takes his turn. Team authored
         if not checkWin():  # Check if Player 0 wins
-            break
+            break #Game is over so break the loop
         takeTurn(player_one, player_zero) # Player one takes his turn. Team authored
         if not checkWin():  # Check if Player 1 wins
-            break
+            break #Game is over so break the loop
     #//stop team authored
     
-main()
+main() #runs the game
 
