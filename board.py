@@ -1,9 +1,39 @@
 """ 
     Program name: board.py
-    Description: 
-    Inputs: 
-    Outputs: 
-    Sources of code: 
+    Description: main file that allows two players to play battleship
+    Inputs:
+    Coordinate for shooting: Users input a grid coordinate (e.g., "A3") to take a shot.
+    Movement for placing ships: Users input movement commands to position their ships:
+        -W (up), A (left), S (down), D (right) for navigation.
+        -R to rotate the ship.
+        -C to confirm the ship placement.
+        -Q to quit.
+    Number of ships: Users input the number of ships to play with (between 1 and 5).
+    Confirmation: Players press Enter to confirm or continue certain actions (e.g., turn change or ship confirmation).
+    Function Input Parameters:
+        -shot: str: The shot taken by a player (e.g., "A3").
+        -enemy: Player: The opponent's Player object to check for hit or miss.
+        -line_pos_x, line_pos_y, size, horizontal: Coordinates and orientation for placing a ship.
+        -grid: The current state of the board/grid for display and manipulation.
+        -p1_selection: Boolean value indicating if Player 1 has completed their ship selection.
+    Outputs:
+    Printed Messages (Console Outputs):
+        -"Choose your coordinate to shoot!" or similar messages during gameplay.
+        -Messages like "HIT!", "MISS!", and "SHIP DESTROYED!" for shot results.
+        -Victory messages such as "Player 0 Wins!" or "Player 1 Wins!" when a player wins.
+        -Movement prompts like "Move (W=up, A=left, S=down, D=right, R=rotate, C=confirm, Q=quit):".
+        -Grid display during ship placement and gameplay using display_grid().
+        -"Overlap detected! Move the line to a new position." if ships overlap.
+        -Final boards for both players at the end of the game.
+    Return Values:
+        -checkHit(): No return, but it prints the result of a shot (hit, miss, ship destroyed).
+        -shootShip(): Returns a string representing the shot's coordinate.
+        -checkWin(): Returns True if the game should continue and False if the game is won.
+        -move_line(): Returns an updated grid with the line placed and the confirmed coordinates.
+        -shipPlacement(): Returns two lists of coordinates representing each player's confirmed ship placements.
+        -translateCoordinates(): Converts and returns integer tuple coordinates into string grid coordinates (e.g., A3).
+        -goodInput(): Returns the number of ships chosen by the user.
+    Sources of code: Chat GPT
     Authors: Connor Bennudriti, Brinley Hull, Gianni Louisa, Kyle Moore, Ben Renner
     Creation Date: 8/29/2024
 """
