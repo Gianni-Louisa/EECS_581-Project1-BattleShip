@@ -1,9 +1,26 @@
 """
     Program name: Player.py
     Description: Creates a class to hold Player object information
-    Inputs: 
-    Outputs: 
-    Sources of code: Team authored and ?
+    Inputs:
+    * __init__
+        -number: (int) Player's identification number.
+        -color: (str) The color associated with the player, should be either 'blue' or 'green'.
+        -header: (str) Header string representing column labels for the game board.
+        -columns: (list of str) List of strings representing the columns on the board.
+        -rows: (list of int) List of integers representing the row numbers on the board.
+    * convertTextToColor
+        -text: (str) The string that will be colored.
+        -color: (str) A string representing the color, must be one of ['green', 'blue', 'red'].
+    * printStrikeBoard
+        -opponent: (Player object) The opponent player, whose ships and strike attempts will be displayed.
+    * printBoard
+        -opponent: (Player object) The opponent player, whose strike attempts will be considered while displaying the current player's board.
+    Outputs:
+    * convertTextToColor
+        -Returns a string wrapped in the appropriate ANSI escape code for the specified color.
+    * getShipLocations
+        -Returns a list of strings where each string represents the location of one of the player's ships on the board.
+    Sources of code: Chat GPT
     Authors: Connor Bennudriti, Brinley Hull, Gianni Louisa, Kyle Moore, Ben Renner
     Creation Date: 9/7/2024
 """
