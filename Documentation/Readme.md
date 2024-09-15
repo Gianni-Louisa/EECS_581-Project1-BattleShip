@@ -11,11 +11,11 @@
 - Run the board.py file in a python IDE
 - Or run the game in a terminal by navigating to the folder you cloned the repository to
 
-cd path/to/cloned/repo
+`cd path/to/cloned/repo`
 
 - And use this command to run the game
 
-python board.py
+`python board.py`
 
 ### 2. Game flow
 
