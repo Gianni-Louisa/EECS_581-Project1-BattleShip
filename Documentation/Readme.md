@@ -17,7 +17,7 @@
 
 `python board.py`
 
-### 2. Game flow
+### 3. Game flow
 
 - The game starts and the progam asks how many ships the players want to battle with
 - Player 0 places all of his/her ships and passes it the game to Player 1 and they do the same
@@ -30,7 +30,7 @@
     - their board reflects any of those results
 - The game ends when a player destroys all of their opponet's ships
 
-### 3. Code Structure
+### 4. Code Structure
 
 board.py (the main file)
 
@@ -79,6 +79,6 @@ Symbol Key:
 
 ![1726390639142](image/Readme/1726390639142.png)
 
-#### Recommendations
+#### 5. Recommendations
 
 To the next team that is in charge of our project, It might be worth choosing to get rid of the ship class and ship file completely because all it does at this point is keep track of the ship coordinates which can be confusing (and the ship class's one method is not even used).
