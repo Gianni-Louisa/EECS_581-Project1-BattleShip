@@ -5,7 +5,7 @@
     Outputs: a ship object 
     Sources of code: None
     Authors: Connor Bennudriti, Brinley Hull, Gianni Louisa, Kyle Moore, Ben Renner
-    Creation Date: 
+    Creation Date: 9/7/2024
 """
 
 class Ship:

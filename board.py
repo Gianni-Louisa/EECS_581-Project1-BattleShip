@@ -90,7 +90,7 @@ def shootShip() -> str:
 
         Sources: Team authored
 
-        Allows a player to input their desired shot coordinates an6d returns a string representing the coordinates
+        Allows a player to input their desired shot coordinates and returns a string representing the coordinates
 
         Parameters
             None
@@ -248,9 +248,9 @@ def move_line(grid, size, p1_selection): #moves and places a line of a given siz
     while True: #runs until the line is confirmed
         temp_grid = add_line_to_grid(grid, line_pos_x, line_pos_y, size, horizontal)  #creates a temproary version of the grid with the current line's position
         if p1_selection == False:#checks to see if p1 has confirmed a final board
-            print("Player 1 Ship Placement Selection!")#they havent
+            print("Player 0 Ship Placement Selection!")#they havent
         else:#me
-            print("Player 2 Ship Placement Selection!")#they have
+            print("Player 1 Ship Placement Selection!")#they have
         display_grid(temp_grid)#print the grid
 
         move = input("Move (W=up, A=left, S=down, D=right, R=rotate, C=confirm, Q=quit): ").upper() #gets the users input and converts it to an uppercase char
