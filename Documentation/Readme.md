@@ -79,6 +79,6 @@ Symbol Key:
 
 ![1726390639142](image/Readme/1726390639142.png)
 
-##### 5. Recommendations
+### 5. Recommendations
 
 To the next team that is in charge of our project, It might be worth choosing to get rid of the ship class and ship file completely because all it does at this point is keep track of the ship coordinates which can be confusing (and the ship class's one method is not even used).
