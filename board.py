@@ -38,8 +38,8 @@
     Creation Date: 8/29/2024
 """
 from os import system, name #sets the system name to name
-from Ship import Ship
-from Player import Player
+from Ship import Ship #imports the Ship class
+from Player import Player #imports the Player class
 
 
 columns = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'] # Defining the column letters to be used for the cordinates
@@ -47,8 +47,8 @@ rows = range(1, 11) # Range of rows that should be used for the board. In this c
 str_rows = ['1', '2', '3', '4', '5', '6', '7', '8', '9', "10"] # Defining the number of rows of the board for easy string operations. Team authored
 header = '    ' + ' '.join(columns) # Defining the header of the board. # ChatGPT Assisted
 
-player_zero = Player(0, 'green', header, columns, rows) 
-player_one = Player(1, 'blue', header, columns, rows)
+player_zero = Player(0, 'green', header, columns, rows) # Intitializes Player Number, color, header, columns, and rows
+player_one = Player(1, 'blue', header, columns, rows) # Intitializes Player Number, color, header, columns, and rows
 
         
 
@@ -148,12 +148,12 @@ def checkWin():
 
 #prints the final boards for each player after the game is over
 def printFinalBoards():
-    print("player 0's board")
-    player_zero.printStrikeBoard(player_one)
-    player_zero.printBoard(player_one) 
-    print("\nplayer 1's board\n ")
-    player_one.printStrikeBoard(player_zero)
-    player_one.printBoard(player_zero)
+    print("player 0's board") #print-out
+    player_zero.printStrikeBoard(player_one) #prints player_zero's strike board
+    player_zero.printBoard(player_one)  #prints player_zero's board
+    print("\nplayer 1's board\n ") #print-out
+    player_one.printStrikeBoard(player_zero) #prints player_one's strike board
+    player_one.printBoard(player_zero) #prints player_one's board
 
 def takeTurn(player: Player, opponent: Player) -> None:
     """
@@ -186,8 +186,8 @@ def takeTurn(player: Player, opponent: Player) -> None:
     player.strike_attempts.append(shot) # Add the shot taken to the player's strike attempts
 
     input("Press Enter and pass to the next player...\n") # Print a continue game line to the console
-    clearAndPass()
-    input("Next player press enter to continue")
+    clearAndPass() # Clear the console for the next player's turn
+    input("Next player press enter to continue") # Print a continue game line to the console
     '''Team Authored End'''
     
 #//start Chat GPT authored
