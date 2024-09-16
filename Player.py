@@ -53,11 +53,12 @@ class Player:
         self.ships = [] # A list of the player's ship objects
         self.strike_attempts = [] # A list containing a player's strikes
 
+    #Gianni and Connor authored
     def convertTextToColor(self, text: str, color: str) -> str:
         """
             convertTextToColor(color: str, text: str)
 
-            Sources: 
+            Sources: Team authored
 
             Function to get the ascii for a string to display it as a given color ('green', 'blue', or 'red')
 
@@ -68,14 +69,14 @@ class Player:
             Returns:
                 The 'text' string with the appropriate color code around it
         """
-        if (color == 'green'):
-            return f'\033[32m{text}\033[0m'
-        elif color == 'blue':
-            return f'\033[34m{text}\033[0m'
-        elif color == 'red':
-            return f'\033[31m{text}\033[0m'
-        else:
-            raise Exception("ERROR: Invalid color string provided")
+        if (color == 'green'): # If the color str is 'green'
+            return f'\033[32m{text}\033[0m' # Return the string surrounded by ascii that convert the text to green 
+        elif color == 'blue': # If the color str is 'blue'
+            return f'\033[34m{text}\033[0m' # Return the string surrounded by ascii that convert the text to blue 
+        elif color == 'red': # If the color str is 'red'
+            return f'\033[31m{text}\033[0m' # Return the string surrounded by ascii that convert the text to red 
+        else: # If the color str is anything other than 'green', 'blue', or 'red'
+            raise Exception("ERROR: Invalid color string provided") # Raise an error
 
     #Gianni Louisa and Connor authored, chatgpt assisted
     def printStrikeBoard(self, opponent) -> None: # Print the board with the opponent's strikes on it

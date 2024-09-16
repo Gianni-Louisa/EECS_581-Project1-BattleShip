@@ -10,9 +10,18 @@
 
 class Ship:
     def __init__(self, locations: list):
-        self.locations = locations
-        self.hit_segments = []
-        self.destroyed: bool = False
+        """
+            __init__(self, locations: list)
 
-    def hit(self):
-        self.destroyed = True
+            Sources: Team authored
+
+            Initalized the Ship class
+
+            Returns None
+
+            Parameters:
+                locations: A list of board locations where ship segments are located
+        """
+        self.locations = locations # A list of board locations where ship segments are located
+        self.hit_segments = [] # A list containing the locations of ship segments that have been hit
+        self.destroyed: bool = False # A bool to sinify if the ship has been destroyed (all segments hit)
